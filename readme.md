@@ -33,6 +33,8 @@ Once the `login` method succeeds, the user will be authenticated and available v
 had logged in through your application normally.
 
 ```php
+use \AdamWathan\EloquentOAuth\ApplicationRejectedException;
+
 Route::get('facebook/login', function() {
 	try {
 		OAuth::login('facebook');
