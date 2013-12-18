@@ -95,7 +95,7 @@ Add the facade to the `aliases` array in `app/config/app.php`:
 ```php
 'aliases' => array(
 	// ...
-	'OAuth' => AdamWathan\EloquentOAuth\Facades\OAuth',
+	'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
 	// ...
 )
 ```
