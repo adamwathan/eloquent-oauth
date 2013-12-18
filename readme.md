@@ -120,3 +120,9 @@ Run the migration:
 `php artisan migrate --package="adamwathan/eloquent-oauth"`
 
 All done!
+
+## Notes
+
+Eloquent OAuth is designed to integrate with Laravel's Eloquent authentication driver, so be sure you are using the `eloquent`
+driver in `app/config/auth.php`. You can define your actual `User` model however you choose and add whatever behavior you need,
+just be sure to specify the model you are using with it's fully qualified namespace in `app/config/auth.php` as well.
