@@ -5,6 +5,7 @@ use Facebook;
 class FacebookProvider extends Provider
 {
 	protected $facebook;
+	protected $userData;
 
 	public function __construct($config)
 	{
@@ -28,15 +29,51 @@ class FacebookProvider extends Provider
 		return $this->facebook->getLoginUrl($params);
 	}
 
-	public function getAccessToken()
+	protected function accessToken()
 	{
 		$accessToken = $this->facebook->getAccessToken();
 		$this->facebook->setExtendedAccessToken();
 		return $accessToken;
 	}
 
-	public function getUserId()
+	protected function userId()
 	{
 		return $this->facebook->getUser();
+	}
+
+	protected function nickname()
+	{
+		return $this->getUserData('username');
+	}
+
+	protected function firstName()
+	{
+		return $this->getUserData('first_name');
+	}
+
+	protected function lastName()
+	{
+		return $this->getUserData('last_name');
+	}
+
+	protected function email()
+	{
+		return $this->getUserData('email');
+	}
+
+	protected function imageUrl()
+	{
+		$url = 'https://graph.facebook.com/';
+		$url .= $this->getUserData('id');
+		$url .= '/picture';
+		return $url;
+	}
+
+	protected function getUserData($key)
+	{
+		if (! isset($this->userData)) {
+			$this->userData = $this->facebook->api('/me');
+		}
+		return isset($this->userData[$key]) ? $this->userData[$key]: null;
 	}
 }

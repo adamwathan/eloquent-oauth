@@ -1,5 +1,6 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
+use Closure;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Routing\Redirector as Redirect;
 use AdamWathan\EloquentOAuth\Providers\Provider;
@@ -25,34 +26,39 @@ class OAuthManager
 
     public function authorize($provider)
     {
-        return $this->redirect->to($this->providers[$provider]->authorizeUrl());
+        return $this->redirect->to($this->getProvider($provider)->authorizeUrl());
     }
 
-    public function login($provider)
+    protected function getProvider($providerAlias)
     {
-        if (! $accessToken = $this->providers[$provider]->getAccessToken()) {
+        return $this->providers[$providerAlias];
+    }
+
+    public function login($provider, Closure $callback = null)
+    {
+        if (! $details = $this->getProvider($provider)->userDetails()) {
             throw new ApplicationRejectedException;
         }
-        if (! $providerUserId = $this->providers[$provider]->getUserId()) {
-            throw new ApplicationRejectedException;
+        $user = $this->updateUser($provider, $details);
+        if ($callback) {
+            $callback($user, $details);
         }
-        $user = $this->updateUser($provider, $providerUserId, $accessToken);
         $this->auth->login($user);
     }
 
-    protected function updateUser($provider, $providerUserId, $accessToken)
+    protected function updateUser($provider, ProviderUserDetails $details)
     {
-        if (! $user = $this->getUser($provider, $providerUserId)) {
-            $user = $this->createUser($provider, $providerUserId, $accessToken);
+        if (! $user = $this->getUser($provider, $details)) {
+            $user = $this->createUser();
         }
-        $this->updateAccessToken($user, $provider, $providerUserId, $accessToken);
+        $this->updateAccessToken($user, $provider, $details);
         return $user;
     }
 
-    protected function getUser($provider, $providerUserId)
+    protected function getUser($provider, ProviderUserDetails $details)
     {
         $identity = OAuthIdentity::where('provider', $provider)
-            ->where('provider_user_id', $providerUserId)
+            ->where('provider_user_id', $details->userId)
             ->first();
         if (! $identity) {
             return null;
@@ -68,10 +74,10 @@ class OAuthManager
         return $user;
     }
 
-    protected function updateAccessToken($user, $provider, $providerUserId, $accessToken)
+    protected function updateAccessToken($user, $provider, ProviderUserDetails $details)
     {
         $this->flushAccessTokens($user, $provider);
-        $this->addAccessToken($user, $provider, $providerUserId, $accessToken);
+        $this->addAccessToken($user, $provider, $details);
     }
 
     protected function flushAccessTokens($user, $provider)
@@ -81,13 +87,13 @@ class OAuthManager
             ->delete();
     }
 
-    protected function addAccessToken($user, $provider, $providerUserId, $accessToken)
+    protected function addAccessToken($user, $provider, ProviderUserDetails $details)
     {
         $identity = new OAuthIdentity;
         $identity->user_id = $user->getKey();
         $identity->provider = $provider;
-        $identity->provider_user_id = $providerUserId;
-        $identity->access_token = $accessToken;
+        $identity->provider_user_id = $details->userId;
+        $identity->access_token = $details->accessToken;
         $identity->save();
     }
 }
