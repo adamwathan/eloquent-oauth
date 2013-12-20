@@ -29,6 +29,12 @@ class FacebookProvider extends Provider
 		return $this->facebook->getLoginUrl($params);
 	}
 
+	public function userDetails()
+	{
+		$details = parent::userDetails();
+		$details->addDetails($this->getUserData());
+	}
+
 	protected function accessToken()
 	{
 		$accessToken = $this->facebook->getAccessToken();
@@ -69,10 +75,13 @@ class FacebookProvider extends Provider
 		return $url;
 	}
 
-	protected function getUserData($key)
+	protected function getUserData($key = null)
 	{
 		if (! isset($this->userData)) {
 			$this->userData = $this->facebook->api('/me');
+		}
+		if (is_null($key)) {
+			return $this->userData;
 		}
 		return isset($this->userData[$key]) ? $this->userData[$key]: null;
 	}
