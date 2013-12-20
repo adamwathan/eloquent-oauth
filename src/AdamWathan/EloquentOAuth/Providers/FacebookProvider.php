@@ -33,6 +33,7 @@ class FacebookProvider extends Provider
 	{
 		$details = parent::userDetails();
 		$details->addDetails($this->getUserData());
+		return $details;
 	}
 
 	protected function accessToken()
