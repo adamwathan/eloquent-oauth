@@ -10,13 +10,15 @@ class OAuthManager
     protected $auth;
     protected $model;
     protected $redirect;
+    protected $identities;
     protected $providers = array();
 
-    public function __construct(Auth $auth, $model, Redirect $redirect)
+    public function __construct(Auth $auth, $model, Redirect $redirect, IdentityRepository $identities)
     {
         $this->auth = $auth;
         $this->model = $model;
         $this->redirect = $redirect;
+        $this->identities = $identities;
     }
 
     public function registerProvider($alias, Provider $provider)
@@ -36,41 +38,52 @@ class OAuthManager
 
     public function login($provider, Closure $callback = null)
     {
-        if (! $details = $this->getProvider($provider)->userDetails()) {
-            throw new ApplicationRejectedException;
-        }
-        $user = $this->updateUser($provider, $details);
+        $details = $this->getUserDetails($provider);
+        $user = $this->getUser($provider, $details);
         if ($callback) {
             $callback($user, $details);
         }
         $this->auth->login($user);
     }
 
+    protected function getUser($provider, $details)
+    {
+        if ($this->userExists($provider, $details)) {
+            $user = $this->updateUser($provider, $details);
+        } else {
+            $user = $this->createUser($provider, $details);
+        }
+        return $user;
+    }
+
+    protected function getUserDetails($provider)
+    {
+        return $this->getProvider($provider)->getUserDetails();
+    }
+
+    protected function userExists($provider, ProviderUserDetails $details)
+    {
+        return (bool) $this->getIdentity($provider, $details);
+    }
+
+    protected function getIdentity($provider, ProviderUserDetails $details)
+    {
+        return $this->identities->getByProvider($provider, $details->userid);
+    }
+
     protected function updateUser($provider, ProviderUserDetails $details)
     {
-        if (! $user = $this->getUser($provider, $details)) {
-            $user = $this->createUser();
-        }
+        $identity = $this->getIdentity($provider, $details);
+        $user = $identity->belongsTo($this->model, 'user_id')->first();
         $this->updateAccessToken($user, $provider, $details);
         return $user;
     }
 
-    protected function getUser($provider, ProviderUserDetails $details)
-    {
-        $identity = OAuthIdentity::where('provider', $provider)
-            ->where('provider_user_id', $details->userId)
-            ->first();
-        if (! $identity) {
-            return null;
-        }
-        $user = $identity->belongsTo($this->model, 'user_id')->first();
-        return $user;
-    }
-
-    protected function createUser()
+    protected function createUser($provider, ProviderUserDetails $details)
     {
         $user = new $this->model;
         $user->save();
+        $this->addAccessToken($user, $provider, $details);
         return $user;
     }
 
@@ -82,9 +95,7 @@ class OAuthManager
 
     protected function flushAccessTokens($user, $provider)
     {
-        OAuthIdentity::where('user_id', $user->getKey())
-            ->where('provider', $provider)
-            ->delete();
+        $this->identities->flush($user, $provider);
     }
 
     protected function addAccessToken($user, $provider, ProviderUserDetails $details)
@@ -94,6 +105,6 @@ class OAuthManager
         $identity->provider = $provider;
         $identity->provider_user_id = $details->userId;
         $identity->access_token = $details->accessToken;
-        $identity->save();
+        $this->identities->store($identity);
     }
 }

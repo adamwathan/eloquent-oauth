@@ -2,11 +2,25 @@
 
 use AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
 
-class FacebookProvider extends Provider
+class GoogleProvider extends Provider
 {
-	protected $authorizeUrl = "https://www.facebook.com/dialog/oauth";
-	protected $accessTokenUrl = "https://graph.facebook.com/oauth/access_token";
-	protected $userDataUrl = "https://graph.facebook.com/me";
+	protected $authorizeUrl = "https://accounts.google.com/o/oauth2/auth";
+	protected $accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
+	protected $userDataUrl = "https://www.googleapis.com/userinfo/v2/me";
+
+
+	protected $headers = array(
+		'authorize' => array(),
+		'access_token' => array(
+			'Content-Type' => 'application/x-www-form-urlencoded'
+		),
+		'user_details' => array(),
+	);
+
+	protected function compileScopes()
+	{
+		return implode(' ', $this->scope);
+	}
 
 	protected function getAuthorizeUrl()
 	{
@@ -25,11 +39,11 @@ class FacebookProvider extends Provider
 
 	protected function parseTokenResponse($response)
 	{
-		parse_str($response);
-		if (! isset($access_token)) {
+		$data = json_decode($response);
+		if (! isset($data->access_token)) {
 			throw new InvalidAuthorizationCodeException;
 		}
-		return $access_token;
+		return $data->access_token;
 	}
 
 	protected function parseUserDataResponse($response)
@@ -44,22 +58,22 @@ class FacebookProvider extends Provider
 
 	protected function nickname()
 	{
-		return $this->getProviderUserData('username');
+		return $this->getProviderUserData('email');
 	}
 
 	protected function firstName()
 	{
-		return $this->getProviderUserData('first_name');
+		return $this->getProviderUserData('given_name');
 	}
 
 	protected function lastName()
 	{
-		return $this->getProviderUserData('last_name');
+		return $this->getProviderUserData('family_name');
 	}
 
 	protected function imageUrl()
 	{
-		return 'https://graph.facebook.com/'.$this->userId().'/picture';
+		return $this->getProviderUserData('picture');
 	}
 
 	protected function email()

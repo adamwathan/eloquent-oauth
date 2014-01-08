@@ -2,6 +2,9 @@
 
 use Illuminate\Support\ServiceProvider;
 use AdamWathan\EloquentOAuth\Providers\FacebookProvider;
+use AdamWathan\EloquentOAuth\Providers\GitHubProvider;
+use AdamWathan\EloquentOAuth\Providers\GoogleProvider;
+use Guzzle\Http\Client as HttpClient;
 
 class EloquentOauthServiceProvider extends ServiceProvider {
 
@@ -36,10 +39,30 @@ class EloquentOauthServiceProvider extends ServiceProvider {
 	{
 		$this->app['adamwathan.oauth'] = $this->app->share(function($app)
 		{
-			$oauth = new OAuthManager($app['auth'], $app['config']['auth.model'], $app['redirect']);
-			$oauth->registerProvider('facebook', new FacebookProvider($app['config']['eloquent-oauth::providers.facebook']));
+			$oauth = new OAuthManager($app['auth'], $app['config']['auth.model'], $app['redirect'], new IdentityRepository);
+			$this->registerFacebook($oauth);
+			$this->registerGithub($oauth);
+			$this->registerGoogle($oauth);
 			return $oauth;
 		});
+	}
+
+	protected function registerFacebook($oauth)
+	{
+		$facebook = new FacebookProvider($this->app['config']['eloquent-oauth::providers.facebook'], new HttpClient);
+		$oauth->registerProvider('facebook', $facebook);
+	}
+
+	protected function registerGithub($oauth)
+	{
+		$github = new GitHubProvider($this->app['config']['eloquent-oauth::providers.github'], new HttpClient);
+		$oauth->registerProvider('github', $github);
+	}
+
+	protected function registerGoogle($oauth)
+	{
+		$google = new GoogleProvider($this->app['config']['eloquent-oauth::providers.google'], new HttpClient);
+		$oauth->registerProvider('google', $google);
 	}
 
 	/**
