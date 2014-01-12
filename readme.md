@@ -34,12 +34,16 @@ had logged in through your application normally.
 
 ```php
 use \AdamWathan\EloquentOAuth\ApplicationRejectedException;
+use \AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
 
 Route::get('facebook/login', function() {
 	try {
 		OAuth::login('facebook');
 	} catch (ApplicationRejectedException $e) {
 		// User rejected application
+	} catch (InvalidAuthorizationCodeException $e) {
+		// Authorization was attempted with invalid
+		// code,likely forgery attempt
 	}
 
 	// Can now retrieve the logged in user
@@ -71,6 +75,8 @@ OAuth::login('facebook', function($user, $details) {
 ## Supported Providers
 
 - Facebook
+- Github
+- Google
 
 *The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.*
 
