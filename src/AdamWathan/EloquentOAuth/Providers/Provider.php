@@ -3,7 +3,7 @@
 use AdamWathan\EloquentOAuth\ProviderUserDetails as UserDetails;
 use AdamWathan\EloquentOAuth\ApplicationRejectedException;
 
-abstract class Provider
+abstract class Provider implements ProviderInterface
 {
 	protected $clientId;
 	protected $clientSecret;

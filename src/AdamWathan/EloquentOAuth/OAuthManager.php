@@ -3,7 +3,7 @@
 use Closure;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Routing\Redirector as Redirect;
-use AdamWathan\EloquentOAuth\Providers\Provider;
+use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 
 class OAuthManager
 {
@@ -21,7 +21,7 @@ class OAuthManager
         $this->identities = $identities;
     }
 
-    public function registerProvider($alias, Provider $provider)
+    public function registerProvider($alias, ProviderInterface $provider)
     {
         $this->providers[$alias] = $provider;
     }

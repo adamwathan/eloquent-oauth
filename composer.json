@@ -10,8 +10,8 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.*",
-        "illuminate/database": "4.*",
+        "illuminate/support": "4.0.*",
+        "illuminate/database": "4.0.*",
         "facebook/php-sdk": "dev-master",
         "guzzle/guzzle": "~3.7"
     },

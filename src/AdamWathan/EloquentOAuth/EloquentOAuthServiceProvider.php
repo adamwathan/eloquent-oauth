@@ -6,7 +6,7 @@ use AdamWathan\EloquentOAuth\Providers\GitHubProvider;
 use AdamWathan\EloquentOAuth\Providers\GoogleProvider;
 use Guzzle\Http\Client as HttpClient;
 
-class EloquentOauthServiceProvider extends ServiceProvider {
+class EloquentOAuthServiceProvider extends ServiceProvider {
 
 	/**
 	 * Indicates if loading of the provider is deferred.
