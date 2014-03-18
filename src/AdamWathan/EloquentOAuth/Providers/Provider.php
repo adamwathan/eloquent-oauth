@@ -46,7 +46,9 @@ abstract class Provider implements ProviderInterface
 		$queryString .= "&scope=".urlencode($this->compileScopes());
 		$queryString .= "&redirect_uri=".$this->redirectUri;
 		$queryString .= "&response_type=code";
-		$queryString .= "&state=abc123";
+
+		// Stick a real state string in here soon...
+		// $queryString .= "&state=abc123";
 		return $queryString;
 	}
 
