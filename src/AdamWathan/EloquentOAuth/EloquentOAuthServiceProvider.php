@@ -39,7 +39,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 	{
 		$this->app['adamwathan.oauth'] = $this->app->share(function($app)
 		{
-			$oauth = new OAuthManager($app['auth'], $app['config']['auth.model'], $app['redirect'], new IdentityRepository);
+			$oauth = new OAuthManager($app['auth'], $app['config']['auth.model'], $app['redirect'], $app['session.store'], new IdentityRepository);
 			$this->registerFacebook($oauth);
 			$this->registerGithub($oauth);
 			$this->registerGoogle($oauth);

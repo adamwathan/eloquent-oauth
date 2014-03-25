@@ -2,6 +2,6 @@
 
 interface ProviderInterface
 {
-	public function authorizeUrl();
+	public function authorizeUrl($state);
 	public function getUserDetails();
 }

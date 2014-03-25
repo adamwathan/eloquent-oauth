@@ -3,6 +3,7 @@
 use Closure;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Routing\Redirector as Redirect;
+use Illuminate\Session\Store as Session;
 use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 
 class OAuthManager
@@ -10,14 +11,17 @@ class OAuthManager
     protected $auth;
     protected $model;
     protected $redirect;
+    protected $session;
     protected $identities;
+    protected $state;
     protected $providers = array();
 
-    public function __construct(Auth $auth, $model, Redirect $redirect, IdentityRepository $identities)
+    public function __construct(Auth $auth, $model, Redirect $redirect, Session $session, IdentityRepository $identities)
     {
         $this->auth = $auth;
         $this->model = $model;
         $this->redirect = $redirect;
+        $this->session = $session;
         $this->identities = $identities;
     }
 
@@ -28,7 +32,18 @@ class OAuthManager
 
     public function authorize($provider)
     {
-        return $this->redirect->to($this->getProvider($provider)->authorizeUrl());
+        $this->setState(str_random());
+        return $this->redirect->to($this->getProvider($provider)->authorizeUrl($this->getState()));
+    }
+
+    protected function setState($state)
+    {
+        $this->session->put('oauth.state', $state);
+    }
+
+    protected function getState()
+    {
+        return $this->session->get('oauth.state');
     }
 
     protected function getProvider($providerAlias)
@@ -38,12 +53,20 @@ class OAuthManager
 
     public function login($provider, Closure $callback = null)
     {
+        $this->verifyState();
         $details = $this->getUserDetails($provider);
         $user = $this->getUser($provider, $details);
         if ($callback) {
             $callback($user, $details);
         }
         $this->auth->login($user);
+    }
+
+    protected function verifyState()
+    {
+        if (! isset($_GET['state']) || $_GET['state'] !== $this->getState()) {
+            throw new InvalidAuthorizationCodeException;
+        }
     }
 
     protected function getUser($provider, $details)

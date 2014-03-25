@@ -33,22 +33,20 @@ abstract class Provider implements ProviderInterface
 		return $this->redirectUri;
 	}
 
-	public function authorizeUrl()
+	public function authorizeUrl($state)
 	{
 		$url = $this->getAuthorizeUrl();
-		$url .= '?' . $this->buildAuthorizeQueryString();
+		$url .= '?' . $this->buildAuthorizeQueryString($state);
 		return $url;
 	}
 
-	protected function buildAuthorizeQueryString()
+	protected function buildAuthorizeQueryString($state)
 	{
 		$queryString = "client_id=".$this->clientId;
 		$queryString .= "&scope=".urlencode($this->compileScopes());
 		$queryString .= "&redirect_uri=".$this->redirectUri;
 		$queryString .= "&response_type=code";
-
-		// Stick a real state string in here soon...
-		// $queryString .= "&state=abc123";
+		$queryString .= "&state=".$state;
 		return $queryString;
 	}
 
