@@ -2,6 +2,7 @@
 
 use AdamWathan\EloquentOAuth\ProviderUserDetails as UserDetails;
 use AdamWathan\EloquentOAuth\ApplicationRejectedException;
+use AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
 
 abstract class Provider implements ProviderInterface
 {
@@ -82,7 +83,11 @@ abstract class Provider implements ProviderInterface
 	{
 		$url = $this->getAccessTokenBaseUrl();
 		$request = $this->httpClient->post($url, $this->headers['access_token'], $this->buildAccessTokenPostBody());
-		$response = $request->send();
+		try {
+			$response = $request->send();
+		} catch (\Exception $e) {
+			throw new InvalidAuthorizationCodeException;
+		}
 		return $this->parseTokenResponse((string) $response->getBody());
 	}
 
