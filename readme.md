@@ -77,6 +77,7 @@ OAuth::login('facebook', function($user, $details) {
 - Facebook
 - Github
 - Google
+- LinkedIn
 
 *The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.*
 
