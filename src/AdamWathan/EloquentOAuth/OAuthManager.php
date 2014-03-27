@@ -32,8 +32,14 @@ class OAuthManager
 
     public function authorize($provider)
     {
-        $this->setState(str_random());
-        return $this->redirect->to($this->getProvider($provider)->authorizeUrl($this->getState()));
+        $state = $this->generateState();
+        return $this->redirect->to($this->getProvider($provider)->authorizeUrl($state));
+    }
+
+    protected function generateState()
+    {
+        $this->setState($state = str_random());
+        return $state;
     }
 
     protected function setState($state)
