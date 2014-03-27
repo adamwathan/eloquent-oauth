@@ -12,6 +12,7 @@ class LinkedInProvider extends Provider
 		'first-name',
 		'last-name',
 		'email-address',
+		'picture-url',
 	);
 
 	protected function compileScopes()
@@ -64,7 +65,6 @@ class LinkedInProvider extends Provider
 
 	protected function parseUserDataResponse($response)
 	{
-		dd($response);
 		return json_decode($response, true);
 	}
 
@@ -75,26 +75,26 @@ class LinkedInProvider extends Provider
 
 	protected function nickname()
 	{
-		return $this->getProviderUserData('username');
+		return $this->getProviderUserData('emailAddress');
 	}
 
 	protected function firstName()
 	{
-		return $this->getProviderUserData('first_name');
+		return $this->getProviderUserData('firstName');
 	}
 
 	protected function lastName()
 	{
-		return $this->getProviderUserData('last_name');
+		return $this->getProviderUserData('lastName');
 	}
 
 	protected function imageUrl()
 	{
-		return 'https://graph.facebook.com/'.$this->userId().'/picture';
+		return $this->getProviderUserData('pictureUrl');
 	}
 
 	protected function email()
 	{
-		return $this->getProviderUserData('email');
+		return $this->getProviderUserData('emailAddress');
 	}
 }
