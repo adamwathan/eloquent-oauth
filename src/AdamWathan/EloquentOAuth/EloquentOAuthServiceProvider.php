@@ -4,6 +4,7 @@ use Illuminate\Support\ServiceProvider;
 use AdamWathan\EloquentOAuth\Providers\FacebookProvider;
 use AdamWathan\EloquentOAuth\Providers\GitHubProvider;
 use AdamWathan\EloquentOAuth\Providers\GoogleProvider;
+use AdamWathan\EloquentOAuth\Providers\LinkedInProvider;
 use Guzzle\Http\Client as HttpClient;
 
 class EloquentOAuthServiceProvider extends ServiceProvider {
@@ -43,6 +44,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 			$this->registerFacebook($oauth);
 			$this->registerGithub($oauth);
 			$this->registerGoogle($oauth);
+			$this->registerLinkedIn($oauth);
 			return $oauth;
 		});
 	}
@@ -63,6 +65,12 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 	{
 		$google = new GoogleProvider($this->app['config']['eloquent-oauth::providers.google'], new HttpClient);
 		$oauth->registerProvider('google', $google);
+	}
+
+	protected function registerLinkedIn($oauth)
+	{
+		$google = new LinkedInProvider($this->app['config']['eloquent-oauth::providers.linkedin'], new HttpClient);
+		$oauth->registerProvider('linkedin', $google);
 	}
 
 	/**
