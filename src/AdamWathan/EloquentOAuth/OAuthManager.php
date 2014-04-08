@@ -97,7 +97,7 @@ class OAuthManager
 
     protected function getIdentity($provider, ProviderUserDetails $details)
     {
-        return $this->identities->getByProvider($provider, $details->userid);
+        return $this->identities->getByProvider($provider, $details->userId);
     }
 
     protected function updateUser($provider, ProviderUserDetails $details)
