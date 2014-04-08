@@ -124,12 +124,6 @@ Update your app information for the providers you are using in `app/config/packa
 )
 ```
 
-If you need to change the name of the table used to store OAuth identities, you can do so in the same config file:
-
-```php
-'table' => 'social_login_tokens',
-```
-
 Run the migration:
 
 `php artisan migrate --package="adamwathan/eloquent-oauth"`

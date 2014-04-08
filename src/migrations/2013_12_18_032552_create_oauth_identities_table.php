@@ -12,7 +12,7 @@ class CreateOauthIdentitiesTable extends Migration {
 	 */
 	public function up()
 	{
-		$tableName = Config::get('eloquent-oauth::table') ?: 'oauth_identities';
+		$tableName = 'oauth_identities';
 		Schema::create($tableName, function(Blueprint $table)
 		{
 			$table->increments('id');

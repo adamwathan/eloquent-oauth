@@ -1,7 +1,6 @@
 <?php
 
 return array(
-	'table' => 'oauth_identities',
 	'providers' => array(
 		'facebook' => array(
 			'id' => '12345678',
