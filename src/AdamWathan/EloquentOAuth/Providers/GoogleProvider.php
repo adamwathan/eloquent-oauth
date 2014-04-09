@@ -7,7 +7,10 @@ class GoogleProvider extends Provider
 	protected $authorizeUrl = "https://accounts.google.com/o/oauth2/auth";
 	protected $accessTokenUrl = "https://accounts.google.com/o/oauth2/token";
 	protected $userDataUrl = "https://www.googleapis.com/userinfo/v2/me";
-
+	protected $scope = array(
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email',
+    );
 
 	protected $headers = array(
 		'authorize' => array(),

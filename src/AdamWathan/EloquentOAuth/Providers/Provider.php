@@ -9,7 +9,7 @@ abstract class Provider implements ProviderInterface
 	protected $clientId;
 	protected $clientSecret;
 	protected $redirectUri;
-	protected $scope;
+	protected $scope = array();
 
 	protected $headers = array(
 		'authorize' => array(),
@@ -26,7 +26,7 @@ abstract class Provider implements ProviderInterface
 		$this->clientId = $config['id'];
 		$this->clientSecret = $config['secret'];
 		$this->redirectUri = $config['redirect'];
-		$this->scope = $config['scope'];
+		$this->scope = array_merge($this->scope, $config['scope']);
 	}
 
 	public function redirectUri()

@@ -7,6 +7,9 @@ class FacebookProvider extends Provider
 	protected $authorizeUrl = "https://www.facebook.com/dialog/oauth";
 	protected $accessTokenUrl = "https://graph.facebook.com/oauth/access_token";
 	protected $userDataUrl = "https://graph.facebook.com/me";
+	protected $scope = array(
+        'email',
+	);
 
 	protected function getAuthorizeUrl()
 	{

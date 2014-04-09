@@ -119,10 +119,11 @@ Update your app information for the providers you are using in `app/config/packa
 		'id' => '12345678',
 		'secret' => 'y0ur53cr374ppk3y',
 		'redirect' => URL::to('facebook/login'),
-		'scope' => '',
+		'scope' => array(),
 	)
 )
 ```
+> Note: Each provider is preconfigured with the necessary scope to retrieve basic user information as well as the user's email address, so the scope array can usually be left empty unless you need specific additional permissions. Consult the provider's API documentation to find out what permissions are available for the various services.
 
 If you need to change the name of the table used to store OAuth identities, you can do so in the same config file:
 
