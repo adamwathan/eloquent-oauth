@@ -130,9 +130,12 @@ If you need to change the name of the table used to store OAuth identities, you 
 'table' => 'social_login_tokens',
 ```
 
-Run the migration:
+Publish and run the migration:
 
-`php artisan migrate --package="adamwathan/eloquent-oauth"`
+```
+php artisan migrate:publish adamwathan/eloquent-oauth
+php artisan migrate
+```
 
 All done!
 
