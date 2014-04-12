@@ -45,6 +45,44 @@ class GitHubProvider extends Provider
 		return $data->access_token;
 	}
 
+	protected function requestUserData()
+	{
+		$userData = parent::requestUserData();
+		$userData['email'] = $this->requestEmail();
+		return $userData;
+	}
+
+	protected function requestEmail()
+	{
+		$url = $this->getEmailUrl();
+		$emails = $this->getJson($url, $this->headers['user_details']);
+		return $this->getPrimaryEmail($emails);
+	}
+
+	protected function getEmailUrl()
+	{
+		$url = $this->getUserDataUrl() .'/emails';
+		$url .= "?access_token=".$this->accessToken;
+		return $url;
+	}
+
+	public function getJson($url, $headers)
+	{
+		$request = $this->httpClient->get($url, $headers);
+		$response = $request->send();
+		return $response->json();
+	}
+
+	protected function getPrimaryEmail($emails)
+	{
+		foreach ($emails as $email) {
+			if ($email['primary']) {
+				return $email['email'];
+			}
+		}
+		return $emails[0]['email'];
+	}
+
 	protected function parseUserDataResponse($response)
 	{
 		$data = json_decode($response, true);
@@ -78,18 +116,6 @@ class GitHubProvider extends Provider
 
 	protected function email()
 	{
-		$url = $this->getUserDataUrl() .'/emails';
-		$url .= "?access_token=".$this->accessToken;
-		$request = $this->httpClient->get($url, array(
-			'Accept' => 'application/vnd.github.v3'
-			));
-		$response = $request->send();
-		$emails = $response->json();
-		foreach ($emails as $email) {
-			if ($email['primary']) {
-				return $email['email'];
-			}
-		}
-		return $emails[0]['email'];
+		return $this->getProviderUserData('email');
 	}
 }
