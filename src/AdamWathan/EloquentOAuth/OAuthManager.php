@@ -54,7 +54,15 @@ class OAuthManager
 
     protected function getProvider($providerAlias)
     {
+        if (! $this->hasProvider($providerAlias)) {
+            throw new ProviderNotRegisteredException("No provider has been registered under the alias '{$providerAlias}'");
+        }
         return $this->providers[$providerAlias];
+    }
+
+    protected function hasProvider($alias)
+    {
+        return isset($this->providers[$alias]);
     }
 
     public function login($provider, Closure $callback = null)
