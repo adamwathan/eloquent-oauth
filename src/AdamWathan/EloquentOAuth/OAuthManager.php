@@ -9,19 +9,18 @@ use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 class OAuthManager
 {
     protected $auth;
-    protected $model;
     protected $redirect;
-    protected $session;
+    protected $stateManager;
     protected $identities;
     protected $state;
     protected $providers = array();
 
-    public function __construct(Auth $auth, $model, Redirect $redirect, Session $session, IdentityRepository $identities)
+    public function __construct(Auth $auth, Redirect $redirect, StateManager $stateManager, UserRepository $users, IdentityRepository $identities)
     {
         $this->auth = $auth;
-        $this->model = $model;
         $this->redirect = $redirect;
-        $this->session = $session;
+        $this->stateManager = $stateManager;
+        $this->users = $users;
         $this->identities = $identities;
     }
 
@@ -38,18 +37,7 @@ class OAuthManager
 
     protected function generateState()
     {
-        $this->setState($state = str_random());
-        return $state;
-    }
-
-    protected function setState($state)
-    {
-        $this->session->put('oauth.state', $state);
-    }
-
-    protected function getState()
-    {
-        return $this->session->get('oauth.state');
+        return $this->stateManager->generateState();
     }
 
     protected function getProvider($providerAlias)
@@ -74,13 +62,12 @@ class OAuthManager
             $callback($user, $details);
         }
         $this->auth->login($user);
+        return $user;
     }
 
     protected function verifyState()
     {
-        if (! isset($_GET['state']) || $_GET['state'] !== $this->getState()) {
-            throw new InvalidAuthorizationCodeException;
-        }
+        $this->stateManager->verifyState();
     }
 
     protected function getUser($provider, $details)
@@ -111,15 +98,14 @@ class OAuthManager
     protected function updateUser($provider, ProviderUserDetails $details)
     {
         $identity = $this->getIdentity($provider, $details);
-        $user = $identity->belongsTo($this->model, 'user_id')->first();
+        $user = $this->users->findByIdentity($identity);
         $this->updateAccessToken($user, $provider, $details);
         return $user;
     }
 
     protected function createUser($provider, ProviderUserDetails $details)
     {
-        $user = new $this->model;
-        $user->save();
+        $user = $this->users->create();
         $this->addAccessToken($user, $provider, $details);
         return $user;
     }
