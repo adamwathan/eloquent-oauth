@@ -3,6 +3,7 @@
 use Closure;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Routing\Redirector as Redirect;
+use AdamWathan\EloquentOAuth\Exceptinos\ProviderNotRegisteredException;
 use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 
 class OAuthManager

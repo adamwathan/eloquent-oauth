@@ -1,6 +1,7 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
 use Illuminate\Session\Store as Session;
+use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 
 class StateManager
 {

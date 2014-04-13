@@ -1,8 +1,8 @@
 <?php namespace AdamWathan\EloquentOAuth\Providers;
 
 use AdamWathan\EloquentOAuth\ProviderUserDetails as UserDetails;
-use AdamWathan\EloquentOAuth\ApplicationRejectedException;
-use AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
+use AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
+use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 
 abstract class Provider implements ProviderInterface
 {

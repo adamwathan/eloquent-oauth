@@ -1,6 +1,6 @@
 <?php namespace AdamWathan\EloquentOAuth\Providers;
 
-use AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
+use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 
 class LinkedInProvider extends Provider
 {
