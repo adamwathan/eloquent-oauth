@@ -3,7 +3,6 @@
 use Closure;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Routing\Redirector as Redirect;
-use Illuminate\Session\Store as Session;
 use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 
 class OAuthManager
