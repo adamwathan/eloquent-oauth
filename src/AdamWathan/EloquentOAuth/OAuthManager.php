@@ -3,7 +3,8 @@
 use Closure;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Routing\Redirector as Redirect;
-use AdamWathan\EloquentOAuth\Exceptinos\ProviderNotRegisteredException;
+use AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException;
+use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 
 class OAuthManager
@@ -67,7 +68,9 @@ class OAuthManager
 
     protected function verifyState()
     {
-        $this->stateManager->verifyState();
+        if (! $this->stateManager->verifyState()) {
+            throw new InvalidAuthorizationCodeException;
+        }
     }
 
     protected function getUser($provider, $details)

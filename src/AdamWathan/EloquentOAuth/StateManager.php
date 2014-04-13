@@ -21,20 +21,21 @@ class StateManager
         return $state;
     }
 
-    public function store($state)
+    protected function store($state)
     {
         $this->session->put('oauth.state', $state);
     }
 
-    public function retrieveState()
-    {
-        return $this->session->get('oauth.state');
-    }
-
     public function verifyState()
     {
-        if (! $this->input->has('state') || $this->input->get('state') !== $this->retrieveState()) {
-            throw new InvalidAuthorizationCodeException;
+        if (! $this->input->has('state')) {
+            return false;
         }
+        return $this->input->get('state') === $this->retrieveState();
+    }
+
+    protected function retrieveState()
+    {
+        return $this->session->get('oauth.state');
     }
 }

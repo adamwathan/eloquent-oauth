@@ -35,7 +35,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException AdamWathan\EloquentOAuth\ProviderNotRegisteredException
+     * @expectedException AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException
      */
     public function test_authorize_throws_exception_when_provider_is_not_registered()
     {
@@ -63,11 +63,13 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
 
         $user = M::mock('stdClass')->shouldIgnoreMissing();
 
-        $provider->shouldReceive('getUserDetails')->andReturn($userDetails);
-        $users->shouldReceive('create')->andReturn($user);
 
         $oauth = new OAuthManager($auth, $redirector, $stateManager, $users, $identities);
         $oauth->registerProvider('provider', $provider);
+
+        $stateManager->shouldReceive('verifyState')->andReturn(true);
+        $provider->shouldReceive('getUserDetails')->andReturn($userDetails);
+        $users->shouldReceive('create')->andReturn($user);
 
         $auth->shouldReceive('login')->with($user)->once();
         $result = $oauth->login('provider');
@@ -90,6 +92,8 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
 
         $oauth = new OAuthManager($auth, $redirector, $stateManager, $users, $identities);
         $oauth->registerProvider('provider', $provider);
+
+        $stateManager->shouldReceive('verifyState')->andReturn(true);
         $provider->shouldReceive('getUserDetails')->andReturn($freshUserDetails);
         $identities->shouldReceive('getByProvider')->andReturn($existingUserDetails);
         $users->shouldReceive('create')->never();
