@@ -10,4 +10,9 @@ class OAuthIdentity extends Eloquent
 	{
 		return Config::get('eloquent-oauth::table');
 	}
+
+	public static function baz()
+	{
+		var_dump('abc');
+	}
 }
