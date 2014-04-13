@@ -1,15 +1,18 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
 use Illuminate\Session\Store as Session;
+use Illuminate\Http\Request;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 
 class StateManager
 {
     protected $session;
+    protected $input;
 
-    public function __construct(Session $session)
+    public function __construct(Session $session, Request $input)
     {
         $this->session = $session;
+        $this->input = $input;
     }
 
     public function generateState()
@@ -30,7 +33,7 @@ class StateManager
 
     public function verifyState()
     {
-        if (! isset($_GET['state']) || $_GET['state'] !== $this->retrieveState()) {
+        if (! $this->input->has('state') || $this->input->get('state') !== $this->retrieveState()) {
             throw new InvalidAuthorizationCodeException;
         }
     }
