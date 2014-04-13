@@ -3,6 +3,8 @@
 use AdamWathan\EloquentOAuth\ProviderUserDetails as UserDetails;
 use AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
+use Illuminate\Http\Request as Input;
+use Guzzle\Http\Client as HttpClient;
 
 abstract class Provider implements ProviderInterface
 {
@@ -20,13 +22,16 @@ abstract class Provider implements ProviderInterface
 	protected $accessToken;
 	protected $providerUserData;
 
-	public function __construct($config, $httpClient)
+	public function __construct($config, HttpClient $httpClient, Input $input)
 	{
 		$this->httpClient = $httpClient;
+		$this->input = $input;
 		$this->clientId = $config['id'];
 		$this->clientSecret = $config['secret'];
 		$this->redirectUri = $config['redirect'];
-		$this->scope = array_merge($this->scope, $config['scope']);
+		if (isset($config['scope'])) {
+			$this->scope = array_merge($this->scope, $config['scope']);
+		}
 	}
 
 	public function redirectUri()
@@ -118,14 +123,15 @@ abstract class Provider implements ProviderInterface
 
 	protected function getAuthorizationCode()
 	{
-		if (! isset($_GET['code'])) {
+		if (! $this->input->has('code')) {
 			throw new ApplicationRejectedException;
 		}
-		return $_GET['code'];
+		return $this->input->get('code');
 	}
 
 	abstract protected function getAuthorizeUrl();
 	abstract protected function getAccessTokenBaseUrl();
+	abstract protected function getUserDataUrl();
 
 	abstract protected function parseTokenResponse($response);
 	abstract protected function parseUserDataResponse($response);
