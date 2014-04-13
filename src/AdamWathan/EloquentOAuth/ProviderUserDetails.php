@@ -2,14 +2,22 @@
 
 class ProviderUserDetails
 {
-	protected $details = array();
+	protected $details = array(
+		'accessToken' => null,
+		'userId' => null,
+		'nickname' => null,
+		'firstName' => null,
+		'lastName' => null,
+		'email' => null,
+		'imageUrl' => null,
+	);
 
 	public function __construct($details)
 	{
-		$this->details = $details;
+		$this->addDetails($details);
 	}
 
-	public function addDetails($details = array())
+	protected function addDetails($details = array())
 	{
 		foreach ($details as $key => $value) {
 			$this->details[$key] = $value;
