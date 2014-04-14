@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-class FunctionalTestCase extends PHPUnit_Framework_TestCase
+abstract class FunctionalTestCase extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
