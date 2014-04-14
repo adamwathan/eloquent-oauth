@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Capsule\Manager as DB;
 
 abstract class FunctionalTestCase extends PHPUnit_Framework_TestCase
 {
@@ -12,8 +12,8 @@ abstract class FunctionalTestCase extends PHPUnit_Framework_TestCase
 
     protected function configureDatabase()
     {
-        $capsule = new Capsule;
-        $capsule->addConnection([
+        $db = new DB;
+        $db->addConnection([
             'driver'    => 'sqlite',
             'host'      => 'localhost',
             'database'  => ':memory:',
@@ -23,13 +23,13 @@ abstract class FunctionalTestCase extends PHPUnit_Framework_TestCase
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
             ]);
-        $capsule->bootEloquent();
-        $capsule->setAsGlobal();
+        $db->bootEloquent();
+        $db->setAsGlobal();
     }
 
     public function migrateIdentitiesTable()
     {
-        Capsule::schema()->create('oauth_identities', function($table) {
+        DB::schema()->create('oauth_identities', function($table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('provider_user_id');
