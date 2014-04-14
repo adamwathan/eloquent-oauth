@@ -14,7 +14,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 	 *
 	 * @var bool
 	 */
-	protected $defer = false;
+	protected $defer = true;
 
 	/**
 	 * Bootstrap the application events.
@@ -40,6 +40,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 	{
 		$this->app['adamwathan.oauth'] = $this->app->share(function($app)
 		{
+			$this->configureOAuthIdentitiesTable();
 			$users = new UserRepository($app['config']['auth.model']);
 			$stateManager = new StateManager($app['session.store'], $app['request']);
 			$oauth = new OAuthManager($app['auth'], $app['redirect'], $stateManager, $users, new IdentityRepository);
@@ -73,6 +74,11 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 	{
 		$linkedin = new LinkedInProvider($this->app['config']['eloquent-oauth::providers.linkedin'], new HttpClient, $this->app['request']);
 		$oauth->registerProvider('linkedin', $linkedin);
+	}
+
+	protected function configureOAuthIdentitiesTable()
+	{
+		OAuthIdentity::configureTable($this->app['config']['eloquent-oauth::table']);
 	}
 
 	/**

@@ -1,52 +1,101 @@
 <?php
 
-use Patchwork\Patchwork;
+use AdamWathan\EloquentOAuth\Testing\FunctionalTestCase;
 use AdamWathan\EloquentOAuth\OAuthIdentity;
 use AdamWathan\EloquentOAuth\IdentityRepository;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Mockery as M;
 
-/**
- * Honestly this test is pretty pointless and isn't really testing anything.
- * This would make much more sense as a functional test with a real database.
- */
-class IdentityRepositoryTest extends PHPUnit_Framework_TestCase
+class IdentityRepositoryTest extends FunctionalTestCase
 {
     public function setUp()
     {
-        Patchwork::start();
-    }
-
-    public function test_flush()
-    {
-        $query = M::mock();
-        $query->shouldReceive('where->where->delete');
-        Patchwork::replace('AdamWathan\\EloquentOAuth\\OAuthIdentity::newQuery', function() use ($query) {
-            return $query;
-        });
-        $user = M::mock('stdClass');
-        $user->shouldReceive('getKey');
-        $repo = new IdentityRepository;
-        $repo->flush($user, 'provider');
+        parent::setUp();
+        Eloquent::unguard();
     }
 
     public function test_getByProvider()
     {
-        $identity = M::mock('AdamWathan\EloquentOAuth\OAuthIdentity');
-        $query = M::mock();
-        $query->shouldReceive('where->where->first')->andReturn($identity);
-        Patchwork::replace('AdamWathan\\EloquentOAuth\\OAuthIdentity::newQuery', function() use ($query) {
-            return $query;
-        });
-        $repo = new IdentityRepository;
-        $result = $repo->getByProvider('provider', 1);
-        $this->assertEquals($identity, $result);
+        OAuthIdentity::create(array(
+            'user_id' => 1,
+            'provider' => 'facebook',
+            'provider_user_id' => 'foobar',
+            'access_token' => 'abc123',
+            ));
+        OAuthIdentity::create(array(
+            'user_id' => 2,
+            'provider' => 'facebook',
+            'provider_user_id' => 'bazfoo',
+            'access_token' => 'def456',
+            ));
+
+        $identities = new IdentityRepository;
+        $identity = $identities->getByProvider('facebook', 'bazfoo');
+        $this->assertEquals(2, $identity->user_id);
+        $this->assertEquals('facebook', $identity->provider);
+        $this->assertEquals('bazfoo', $identity->provider_user_id);
+        $this->assertEquals('def456', $identity->access_token);
+    }
+
+    public function test_getByProvider_when_no_match()
+    {
+        OAuthIdentity::create(array(
+            'user_id' => 1,
+            'provider' => 'facebook',
+            'provider_user_id' => 'foobar',
+            'access_token' => 'abc123',
+            ));
+        OAuthIdentity::create(array(
+            'user_id' => 2,
+            'provider' => 'facebook',
+            'provider_user_id' => 'bazfoo',
+            'access_token' => 'def456',
+            ));
+
+        $identities = new IdentityRepository;
+        $identity = $identities->getByProvider('facebook', 'fazboo');
+        $this->assertNull($identity);
+    }
+
+    public function test_flush()
+    {
+        OAuthIdentity::create(array(
+            'user_id' => 1,
+            'provider' => 'facebook',
+            'provider_user_id' => 'foobar',
+            'access_token' => 'abc123',
+            ));
+        OAuthIdentity::create(array(
+            'user_id' => 2,
+            'provider' => 'facebook',
+            'provider_user_id' => 'bazfoo',
+            'access_token' => 'def456',
+            ));
+
+        $this->assertEquals(1, OAuthIdentity::where('provider', 'facebook')->where('user_id', 2)->count());
+
+        $identities = new IdentityRepository;
+        $user = M::mock();
+        $user->shouldReceive('getKey')->andReturn(2);
+        $identities->flush($user, 'facebook');
+
+        $this->assertEquals(0, OAuthIdentity::where('provider', 'facebook')->where('user_id', 2)->count());
     }
 
     public function test_store()
     {
-        $identity = M::mock('AdamWathan\EloquentOAuth\OAuthIdentity');
-        $identity->shouldReceive('save')->once();
-        $repo = new IdentityRepository;
-        $result = $repo->store($identity);
+        $identity = new OAuthIdentity(array(
+            'user_id' => 1,
+            'provider' => 'facebook',
+            'provider_user_id' => 'foobar',
+            'access_token' => 'abc123',
+            ));
+
+        $this->assertEquals(0, OAuthIdentity::count());
+
+        $identities = new IdentityRepository;
+        $identities->store($identity);
+
+        $this->assertEquals(1, OAuthIdentity::count());
     }
 }

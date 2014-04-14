@@ -5,9 +5,15 @@ use Config;
 
 class OAuthIdentity extends Eloquent
 {
-	protected $table = 'oauth_identities';
+	protected static $configuredTable = 'oauth_identities';
+
+	public static function configureTable($table)
+	{
+		static::$configuredTable = $table;
+	}
+
 	public function getTable()
 	{
-		return Config::get('eloquent-oauth::table');
+		return static::$configuredTable;
 	}
 }
