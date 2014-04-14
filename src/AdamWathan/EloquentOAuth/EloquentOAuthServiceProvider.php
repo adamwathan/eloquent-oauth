@@ -45,7 +45,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 			$stateManager = new StateManager($app['session.store'], $app['request']);
 			$oauth = new OAuthManager($app['auth'], $app['redirect'], $stateManager, $users, new IdentityStore);
 			$this->registerFacebook($oauth);
-			$this->registerGithub($oauth);
+			$this->registerGitHub($oauth);
 			$this->registerGoogle($oauth);
 			$this->registerLinkedIn($oauth);
 			return $oauth;
@@ -58,7 +58,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 		$oauth->registerProvider('facebook', $facebook);
 	}
 
-	protected function registerGithub($oauth)
+	protected function registerGitHub($oauth)
 	{
 		$github = new GitHubProvider($this->app['config']['eloquent-oauth::providers.github'], new HttpClient, $this->app['request']);
 		$oauth->registerProvider('github', $github);
