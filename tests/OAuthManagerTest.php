@@ -63,7 +63,6 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
 
         $user = M::mock('stdClass')->shouldIgnoreMissing();
 
-
         $oauth = new OAuthManager($auth, $redirector, $stateManager, $users, $identities);
         $oauth->registerProvider('provider', $provider);
 
@@ -87,9 +86,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $freshUserDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
         $existingUserDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
 
-
         $user = M::mock('stdClass')->shouldIgnoreMissing();
-
 
         $oauth = new OAuthManager($auth, $redirector, $stateManager, $users, $identities);
         $oauth->registerProvider('provider', $provider);
