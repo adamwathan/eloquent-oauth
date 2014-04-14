@@ -7,7 +7,7 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->configureDatabase();
-        $this->migrateIdentitesTable();
+        $this->migrateIdentitiesTable();
     }
 
     protected function configureDatabase()
@@ -27,7 +27,7 @@ class FunctionalTestCase extends \PHPUnit_Framework_TestCase
         $capsule->setAsGlobal();
     }
 
-    public function migrateIdentitesTable()
+    public function migrateIdentitiesTable()
     {
         Capsule::schema()->create('oauth_identities', function($table) {
             $table->increments('id');
