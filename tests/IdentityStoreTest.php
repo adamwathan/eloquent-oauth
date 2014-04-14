@@ -1,12 +1,12 @@
 <?php
 
 use AdamWathan\EloquentOAuth\OAuthIdentity;
-use AdamWathan\EloquentOAuth\IdentityRepository;
+use AdamWathan\EloquentOAuth\IdentityStore;
 use AdamWathan\EloquentOAuth\ProviderUserDetails;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Mockery as M;
 
-class IdentityRepositoryTest extends FunctionalTestCase
+class IdentityStoreTest extends FunctionalTestCase
 {
     public function setUp()
     {
@@ -37,7 +37,7 @@ class IdentityRepositoryTest extends FunctionalTestCase
             'email' => 'john.doe@example.com',
             'imageUrl' => 'http://example.com/photos/john_doe.jpg',
         ));
-        $identities = new IdentityRepository;
+        $identities = new IdentityStore;
         $identity = $identities->getByProvider('facebook', $details);
         $this->assertEquals(2, $identity->user_id);
         $this->assertEquals('facebook', $identity->provider);
@@ -68,7 +68,7 @@ class IdentityRepositoryTest extends FunctionalTestCase
             'email' => 'john.doe@example.com',
             'imageUrl' => 'http://example.com/photos/john_doe.jpg',
         ));
-        $identities = new IdentityRepository;
+        $identities = new IdentityStore;
         $identity = $identities->getByProvider('facebook', $details);
         $this->assertNull($identity);
     }
@@ -90,7 +90,7 @@ class IdentityRepositoryTest extends FunctionalTestCase
 
         $this->assertEquals(1, OAuthIdentity::where('provider', 'facebook')->where('user_id', 2)->count());
 
-        $identities = new IdentityRepository;
+        $identities = new IdentityStore;
         $user = M::mock();
         $user->shouldReceive('getKey')->andReturn(2);
         $identities->flush($user, 'facebook');
@@ -109,7 +109,7 @@ class IdentityRepositoryTest extends FunctionalTestCase
 
         $this->assertEquals(0, OAuthIdentity::count());
 
-        $identities = new IdentityRepository;
+        $identities = new IdentityStore;
         $identities->store($identity);
 
         $this->assertEquals(1, OAuthIdentity::count());

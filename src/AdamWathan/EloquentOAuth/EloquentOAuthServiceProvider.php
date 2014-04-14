@@ -41,9 +41,9 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 		$this->app['adamwathan.oauth'] = $this->app->share(function($app)
 		{
 			$this->configureOAuthIdentitiesTable();
-			$users = new UserRepository($app['config']['auth.model']);
+			$users = new UserStore($app['config']['auth.model']);
 			$stateManager = new StateManager($app['session.store'], $app['request']);
-			$oauth = new OAuthManager($app['auth'], $app['redirect'], $stateManager, $users, new IdentityRepository);
+			$oauth = new OAuthManager($app['auth'], $app['redirect'], $stateManager, $users, new IdentityStore);
 			$this->registerFacebook($oauth);
 			$this->registerGithub($oauth);
 			$this->registerGoogle($oauth);

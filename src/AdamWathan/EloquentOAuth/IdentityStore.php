@@ -1,6 +1,6 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-class IdentityRepository
+class IdentityStore
 {
     public function getByProvider($provider, $providerUserDetails)
     {

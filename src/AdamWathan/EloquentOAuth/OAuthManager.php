@@ -16,7 +16,7 @@ class OAuthManager
     protected $state;
     protected $providers = array();
 
-    public function __construct(Auth $auth, Redirect $redirect, StateManager $stateManager, UserRepository $users, IdentityRepository $identities)
+    public function __construct(Auth $auth, Redirect $redirect, StateManager $stateManager, UserStore $users, IdentityStore $identities)
     {
         $this->auth = $auth;
         $this->redirect = $redirect;

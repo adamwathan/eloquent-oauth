@@ -15,8 +15,8 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $auth = M::mock('Illuminate\\Auth\\AuthManager')->shouldIgnoreMissing();
         $redirector = M::mock('Illuminate\\Routing\\Redirector')->shouldIgnoreMissing();
         $stateManager  = M::mock('AdamWathan\\EloquentOAuth\\StateManager')->shouldIgnoreMissing();
-        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserRepository')->shouldIgnoreMissing();
-        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityRepository')->shouldIgnoreMissing();
+        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserStore')->shouldIgnoreMissing();
+        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
 
         $oauth = new OAuthManager($auth, $redirector, $stateManager, $users, $identities);
 
@@ -42,8 +42,8 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $auth = M::mock('Illuminate\\Auth\\AuthManager')->shouldIgnoreMissing();
         $redirector = M::mock('Illuminate\\Routing\\Redirector')->shouldIgnoreMissing();
         $stateManager  = M::mock('AdamWathan\\EloquentOAuth\\StateManager')->shouldIgnoreMissing();
-        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserRepository')->shouldIgnoreMissing();
-        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityRepository')->shouldIgnoreMissing();
+        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserStore')->shouldIgnoreMissing();
+        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
 
         $oauth = new OAuthManager($auth, $redirector, $stateManager, $users, $identities);
 
@@ -55,8 +55,8 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $auth = M::mock('Illuminate\\Auth\\AuthManager');
         $redirector = M::mock('Illuminate\\Routing\\Redirector');
         $stateManager  = M::mock('AdamWathan\\EloquentOAuth\\StateManager')->shouldIgnoreMissing();
-        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserRepository');
-        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityRepository')->shouldIgnoreMissing();
+        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserStore');
+        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
 
         $provider = M::mock('AdamWathan\\EloquentOAuth\\Providers\\ProviderInterface');
         $userDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
@@ -79,8 +79,8 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $auth = M::mock('Illuminate\\Auth\\AuthManager');
         $redirector = M::mock('Illuminate\\Routing\\Redirector');
         $stateManager  = M::mock('AdamWathan\\EloquentOAuth\\StateManager')->shouldIgnoreMissing();
-        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserRepository');
-        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityRepository')->shouldIgnoreMissing();
+        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserStore');
+        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
 
         $provider = M::mock('AdamWathan\\EloquentOAuth\\Providers\\ProviderInterface');
         $freshUserDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');

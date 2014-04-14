@@ -1,6 +1,6 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-class UserRepository
+class UserStore
 {
     protected $model;
 
