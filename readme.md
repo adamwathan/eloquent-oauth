@@ -75,11 +75,13 @@ OAuth::login('facebook', function($user, $details) {
 ## Supported Providers
 
 - Facebook
-- Github
+- GitHub
 - Google
 - LinkedIn
 
-*The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.*
+>The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.
+
+>Feel free to open an issue if you would like support for a particular provider, or even better, submit a pull request.
 
 ## Installation
 
