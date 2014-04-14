@@ -1,6 +1,5 @@
 <?php
 
-use AdamWathan\EloquentOAuth\Testing\FunctionalTestCase;
 use AdamWathan\EloquentOAuth\OAuthIdentity;
 use AdamWathan\EloquentOAuth\IdentityRepository;
 use Illuminate\Database\Eloquent\Model as Eloquent;

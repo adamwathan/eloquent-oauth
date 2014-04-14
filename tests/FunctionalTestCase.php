@@ -1,8 +1,8 @@
-<?php namespace AdamWathan\EloquentOAuth\Testing;
+<?php
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-class FunctionalTestCase extends \PHPUnit_Framework_TestCase
+class FunctionalTestCase extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

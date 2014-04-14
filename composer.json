@@ -23,7 +23,10 @@
     "autoload": {
         "psr-0": {
             "AdamWathan\\EloquentOAuth\\": "src/"
-        }
+        },
+        "classmap": [
+            "tests/FunctionalTestCase.php"
+        ]
     },
     "minimum-stability": "dev"
 }
