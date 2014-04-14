@@ -87,6 +87,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $freshUserDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
         $existingUserDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
 
+
         $user = M::mock('stdClass')->shouldIgnoreMissing();
 
 
@@ -95,7 +96,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
 
         $stateManager->shouldReceive('verifyState')->andReturn(true);
         $provider->shouldReceive('getUserDetails')->andReturn($freshUserDetails);
-        $identities->shouldReceive('getByProvider')->andReturn($existingUserDetails);
+        $identities->shouldReceive('getByProvider')->with('provider', $freshUserDetails)->andReturn($existingUserDetails);
         $users->shouldReceive('create')->never();
         $users->shouldReceive('findByIdentity')->once()->andReturn($user);
 

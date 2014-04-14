@@ -2,10 +2,10 @@
 
 class IdentityRepository
 {
-    public function getByProvider($provider, $userId)
+    public function getByProvider($provider, $providerUserDetails)
     {
         return OAuthIdentity::where('provider', $provider)
-            ->where('provider_user_id', $userId)
+            ->where('provider_user_id', $providerUserDetails->userId)
             ->first();
     }
 

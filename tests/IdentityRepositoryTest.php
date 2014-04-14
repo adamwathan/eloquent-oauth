@@ -2,6 +2,7 @@
 
 use AdamWathan\EloquentOAuth\OAuthIdentity;
 use AdamWathan\EloquentOAuth\IdentityRepository;
+use AdamWathan\EloquentOAuth\ProviderUserDetails;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Mockery as M;
 
@@ -27,9 +28,17 @@ class IdentityRepositoryTest extends FunctionalTestCase
             'provider_user_id' => 'bazfoo',
             'access_token' => 'def456',
             ));
-
+        $details = new ProviderUserDetails(array(
+            'accessToken' => 'new-token',
+            'userId' => 'bazfoo',
+            'nickname' => 'john.doe',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+        ));
         $identities = new IdentityRepository;
-        $identity = $identities->getByProvider('facebook', 'bazfoo');
+        $identity = $identities->getByProvider('facebook', $details);
         $this->assertEquals(2, $identity->user_id);
         $this->assertEquals('facebook', $identity->provider);
         $this->assertEquals('bazfoo', $identity->provider_user_id);
@@ -50,9 +59,17 @@ class IdentityRepositoryTest extends FunctionalTestCase
             'provider_user_id' => 'bazfoo',
             'access_token' => 'def456',
             ));
-
+        $details = new ProviderUserDetails(array(
+            'accessToken' => 'new-token',
+            'userId' => 'missing-id',
+            'nickname' => 'john.doe',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+        ));
         $identities = new IdentityRepository;
-        $identity = $identities->getByProvider('facebook', 'fazboo');
+        $identity = $identities->getByProvider('facebook', $details);
         $this->assertNull($identity);
     }
 
