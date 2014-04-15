@@ -62,30 +62,6 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 		}
 	}
 
-	protected function registerFacebook($oauth)
-	{
-		$facebook = new FacebookProvider($this->app['config']['eloquent-oauth::providers.facebook'], new HttpClient, $this->app['request']);
-		$oauth->registerProvider('facebook', $facebook);
-	}
-
-	protected function registerGitHub($oauth)
-	{
-		$github = new GitHubProvider($this->app['config']['eloquent-oauth::providers.github'], new HttpClient, $this->app['request']);
-		$oauth->registerProvider('github', $github);
-	}
-
-	protected function registerGoogle($oauth)
-	{
-		$google = new GoogleProvider($this->app['config']['eloquent-oauth::providers.google'], new HttpClient, $this->app['request']);
-		$oauth->registerProvider('google', $google);
-	}
-
-	protected function registerLinkedIn($oauth)
-	{
-		$linkedin = new LinkedInProvider($this->app['config']['eloquent-oauth::providers.linkedin'], new HttpClient, $this->app['request']);
-		$oauth->registerProvider('linkedin', $linkedin);
-	}
-
 	protected function configureOAuthIdentitiesTable()
 	{
 		OAuthIdentity::configureTable($this->app['config']['eloquent-oauth::table']);
