@@ -62,6 +62,7 @@ class OAuthManager
         if ($callback) {
             $callback($user, $details);
         }
+        $this->updateUser($user, $provider, $details);
         $this->auth->login($user);
         return $user;
     }
@@ -73,19 +74,25 @@ class OAuthManager
         }
     }
 
+    protected function getUserDetails($provider)
+    {
+        return $this->getProvider($provider)->getUserDetails();
+    }
+
     protected function getUser($provider, $details)
     {
         if ($this->userExists($provider, $details)) {
-            $user = $this->updateUser($provider, $details);
+            $user = $this->getExistingUser($provider, $details);
         } else {
-            $user = $this->createUser($provider, $details);
+            $user = $this->createUser();
         }
         return $user;
     }
 
-    protected function getUserDetails($provider)
+    protected function updateUser($user, $provider, $details)
     {
-        return $this->getProvider($provider)->getUserDetails();
+        $this->users->store($user);
+        $this->updateAccessToken($user, $provider, $details);
     }
 
     protected function userExists($provider, ProviderUserDetails $details)
@@ -93,23 +100,20 @@ class OAuthManager
         return (bool) $this->getIdentity($provider, $details);
     }
 
+    protected function getExistingUser($provider, $details)
+    {
+        $identity = $this->getIdentity($provider, $details);
+        return $this->users->findByIdentity($identity);
+    }
+
     protected function getIdentity($provider, ProviderUserDetails $details)
     {
         return $this->identities->getByProvider($provider, $details);
     }
 
-    protected function updateUser($provider, ProviderUserDetails $details)
-    {
-        $identity = $this->getIdentity($provider, $details);
-        $user = $this->users->findByIdentity($identity);
-        $this->updateAccessToken($user, $provider, $details);
-        return $user;
-    }
-
-    protected function createUser($provider, ProviderUserDetails $details)
+    protected function createUser()
     {
         $user = $this->users->create();
-        $this->addAccessToken($user, $provider, $details);
         return $user;
     }
 

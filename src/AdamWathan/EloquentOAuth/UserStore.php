@@ -12,7 +12,12 @@ class UserStore
     public function create()
     {
         $user = new $this->model;
-        $user->save();
+        return $user;
+    }
+
+    public function store($user)
+    {
+        return $user->save();
     }
 
     public function findByIdentity($identity)

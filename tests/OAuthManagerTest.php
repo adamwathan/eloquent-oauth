@@ -69,6 +69,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $stateManager->shouldReceive('verifyState')->andReturn(true);
         $provider->shouldReceive('getUserDetails')->andReturn($userDetails);
         $users->shouldReceive('create')->andReturn($user);
+        $users->shouldReceive('store')->andReturn(true);
 
         $auth->shouldReceive('login')->with($user)->once();
         $result = $oauth->login('provider');
@@ -96,6 +97,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $identities->shouldReceive('getByProvider')->with('provider', $freshUserDetails)->andReturn($existingUserDetails);
         $users->shouldReceive('create')->never();
         $users->shouldReceive('findByIdentity')->once()->andReturn($user);
+        $users->shouldReceive('store')->andReturn(true);
 
         $auth->shouldReceive('login')->with($user)->once();
         $result = $oauth->login('provider');
