@@ -1,13 +1,16 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
 use Illuminate\Support\ServiceProvider;
-use AdamWathan\EloquentOAuth\Providers\FacebookProvider;
-use AdamWathan\EloquentOAuth\Providers\GitHubProvider;
-use AdamWathan\EloquentOAuth\Providers\GoogleProvider;
-use AdamWathan\EloquentOAuth\Providers\LinkedInProvider;
 use Guzzle\Http\Client as HttpClient;
 
 class EloquentOAuthServiceProvider extends ServiceProvider {
+
+	protected $providerLookup = array(
+		'facebook' => 'AdamWathan\\EloquentOAuth\\Providers\\FacebookProvider',
+		'github' => 'AdamWathan\\EloquentOAuth\\Providers\\GitHubProvider',
+		'google' => 'AdamWathan\\EloquentOAuth\\Providers\\GoogleProvider',
+		'linkedin' => 'AdamWathan\\EloquentOAuth\\Providers\\LinkedInProvider',
+		);
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -44,12 +47,19 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 			$users = new UserStore($app['config']['auth.model']);
 			$stateManager = new StateManager($app['session.store'], $app['request']);
 			$oauth = new OAuthManager($app['auth'], $app['redirect'], $stateManager, $users, new IdentityStore);
-			$this->registerFacebook($oauth);
-			$this->registerGitHub($oauth);
-			$this->registerGoogle($oauth);
-			$this->registerLinkedIn($oauth);
+			$this->registerProviders($oauth);
 			return $oauth;
 		});
+	}
+
+	protected function registerProviders($oauth)
+	{
+		$providerAliases = $this->app['config']['eloquent-oauth::providers'];
+		foreach ($providerAliases as $alias => $config) {
+			$providerClass = $this->providerLookup[$alias];
+			$provider = new $providerClass($config, new HttpClient, $this->app['request']);
+			$oauth->registerProvider($alias, $provider);
+		}
 	}
 
 	protected function registerFacebook($oauth)
