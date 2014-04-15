@@ -36,6 +36,19 @@ class OAuthManager
         return $this->redirect->to($this->getProvider($provider)->authorizeUrl($state));
     }
 
+    public function login($provider, Closure $callback = null)
+    {
+        $this->verifyState();
+        $details = $this->getUserDetails($provider);
+        $user = $this->getUser($provider, $details);
+        if ($callback) {
+            $callback($user, $details);
+        }
+        $this->updateUser($user, $provider, $details);
+        $this->auth->login($user);
+        return $user;
+    }
+
     protected function generateState()
     {
         return $this->stateManager->generateState();
@@ -52,19 +65,6 @@ class OAuthManager
     protected function hasProvider($alias)
     {
         return isset($this->providers[$alias]);
-    }
-
-    public function login($provider, Closure $callback = null)
-    {
-        $this->verifyState();
-        $details = $this->getUserDetails($provider);
-        $user = $this->getUser($provider, $details);
-        if ($callback) {
-            $callback($user, $details);
-        }
-        $this->updateUser($user, $provider, $details);
-        $this->auth->login($user);
-        return $user;
     }
 
     protected function verifyState()
