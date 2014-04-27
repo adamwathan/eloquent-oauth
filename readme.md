@@ -14,7 +14,7 @@ To authorize the user, simply return the `OAuth::authorize()` method directly fr
 
 ```php
 Route::get('facebook/authorize', function() {
-	return OAuth::authorize('facebook');
+    return OAuth::authorize('facebook');
 });
 ```
 
@@ -37,17 +37,19 @@ use \AdamWathan\EloquentOAuth\ApplicationRejectedException;
 use \AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
 
 Route::get('facebook/login', function() {
-	try {
-		OAuth::login('facebook');
-	} catch (ApplicationRejectedException $e) {
-		// User rejected application
-	} catch (InvalidAuthorizationCodeException $e) {
-		// Authorization was attempted with invalid
-		// code,likely forgery attempt
-	}
+    try {
+        OAuth::login('facebook');
+    } catch (ApplicationRejectedException $e) {
+        // User rejected application
+    } catch (InvalidAuthorizationCodeException $e) {
+        // Authorization was attempted with invalid
+        // code,likely forgery attempt
+    }
 
-	// Can now retrieve the logged in user
-	$user = Auth::user();
+    // Current user is now available via Auth facade
+    $user = Auth::user();
+
+    return Redirect::intended();
 });
 ```
 
@@ -65,10 +67,10 @@ object that contains basic information from the OAuth provider, including:
 
 ```php
 OAuth::login('facebook', function($user, $details) {
-	$user->nickname = $details->nickname;
-	$user->name = $details->firstName . ' ' . $details->lastName;
-	$user->profile_image = $details->imageUrl;
-	$user->save();
+    $user->nickname = $details->nickname;
+    $user->name = $details->firstName . ' ' . $details->lastName;
+    $user->profile_image = $details->imageUrl;
+    $user->save();
 });
 ```
 
@@ -93,9 +95,9 @@ Add the service provider to the `providers` array in `app/config/app.php`:
 
 ```php
 'providers' => array(
-	// ...
-	'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
-	// ...
+    // ...
+    'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
+    // ...
 )
 ```
 
@@ -103,9 +105,9 @@ Add the facade to the `aliases` array in `app/config/app.php`:
 
 ```php
 'aliases' => array(
-	// ...
-	'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
-	// ...
+    // ...
+    'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
+    // ...
 )
 ```
 
@@ -117,12 +119,12 @@ Update your app information for the providers you are using in `app/config/packa
 
 ```php
 'providers' => array(
-	'facebook' => array(
-		'id' => '12345678',
-		'secret' => 'y0ur53cr374ppk3y',
-		'redirect' => URL::to('facebook/login'),
-		'scope' => array(),
-	)
+    'facebook' => array(
+        'id' => '12345678',
+        'secret' => 'y0ur53cr374ppk3y',
+        'redirect' => URL::to('facebook/login'),
+        'scope' => array(),
+    )
 )
 ```
 > Note: Each provider is preconfigured with the necessary scope to retrieve basic user information as well as the user's email address, so the scope array can usually be left empty unless you need specific additional permissions. Consult the provider's API documentation to find out what permissions are available for the various services.
