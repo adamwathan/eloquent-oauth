@@ -1,6 +1,6 @@
 # Eloquent OAuth
 
-Eloquent OAuth is a package for Laravel 4 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your app keys/secrets in a config file, run a migration and from then on it's two method calls and you have OAuth integration.
+Eloquent OAuth is a package for Laravel 4 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your app keys/secrets in a config file, run a migration and from then on it's just two method calls and you have OAuth integration.
 
 ## Usage
 
@@ -91,6 +91,8 @@ Require this package in your `composer.json` file to install via Packagist:
 
 `"adamwathan/eloquent-oauth": "dev-master"`
 
+(If you didn't install Laravel using composer, then you'll need to run `composer update` to trigger the download of elequent-oauth into your laravel app.)
+
 Add the service provider to the `providers` array in `app/config/app.php`:
 
 ```php
@@ -148,4 +150,4 @@ All done!
 
 Eloquent OAuth is designed to integrate with Laravel's Eloquent authentication driver, so be sure you are using the `eloquent`
 driver in `app/config/auth.php`. You can define your actual `User` model however you choose and add whatever behavior you need,
-just be sure to specify the model you are using with it's fully qualified namespace in `app/config/auth.php` as well.
+just be sure to specify the model you are using with its fully qualified namespace in `app/config/auth.php` as well.
