@@ -91,7 +91,7 @@ Require this package in your `composer.json` file to install via Packagist:
 
 `"adamwathan/eloquent-oauth": "dev-master"`
 
-(If you didn't install Laravel using composer, then you'll need to run `composer update` to trigger the download of elequent-oauth into your laravel app.)
+...then run `composer update` to download the package to your vendor directory.
 
 Add the service provider to the `providers` array in `app/config/app.php`:
 
