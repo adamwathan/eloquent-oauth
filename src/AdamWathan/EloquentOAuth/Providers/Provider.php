@@ -91,7 +91,7 @@ abstract class Provider implements ProviderInterface
 		try {
 			$response = $request->send();
 		} catch (\Exception $e) {
-			throw new InvalidAuthorizationCodeException;
+			throw new InvalidAuthorizationCodeException((string) $e->getResponse());
 		}
 		return $this->parseTokenResponse((string) $response->getBody());
 	}
