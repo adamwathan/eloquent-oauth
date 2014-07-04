@@ -45,7 +45,7 @@ abstract class Provider implements ProviderInterface
 		$url .= '?' . $this->buildAuthorizeQueryString($state);
 		return $url;
 	}
-
+	
 	protected function buildAuthorizeQueryString($state)
 	{
 		$queryString = "client_id=".$this->clientId;

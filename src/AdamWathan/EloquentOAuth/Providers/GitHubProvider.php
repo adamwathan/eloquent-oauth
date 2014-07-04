@@ -4,9 +4,10 @@ use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 
 class GitHubProvider extends Provider
 {
-	protected $authorizeUrl = "https://github.com/login/oauth/authorize";
-	protected $accessTokenUrl = "https://github.com/login/oauth/access_token";
-	protected $userDataUrl = "https://api.github.com/user";
+	protected $baseUrl = "https://github.com";
+	protected $authorizeUrl = $baseUrl . "/login/oauth/authorize";
+	protected $accessTokenUrl = $baseUrl . "/login/oauth/access_token";
+	protected $userDataUrl = $baseUrl . "/user";
 	protected $scope = array(
         'user:email',
 	);
@@ -20,6 +21,12 @@ class GitHubProvider extends Provider
 			'Accept' => 'application/vnd.github.v3'
 		),
 	);
+	
+	public function request($uri, $accessToken)
+	{
+		$uri = ((substr($uri, 0, 1) != '/') ? '/' : '') . $uri;
+		return $this->getJson($this->getRequestUrl($baseUrl . $uri . "?access_token=" . $accessToken), []);
+	}
 
 	protected function getAuthorizeUrl()
 	{
