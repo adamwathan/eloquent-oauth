@@ -1,7 +1,7 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
 use Illuminate\Support\ServiceProvider;
-use Guzzle\Http\Client as HttpClient;
+use Guzzle\HttpClient as HttpClient;
 
 class EloquentOAuthServiceProvider extends ServiceProvider {
 

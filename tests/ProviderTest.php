@@ -19,7 +19,7 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('Guzzle\\HttpClient')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
@@ -37,7 +37,7 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('Guzzle\\HttpClient')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
@@ -56,7 +56,7 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('Guzzle\\HttpClient')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
@@ -87,7 +87,7 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('Guzzle\\HttpClient')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
