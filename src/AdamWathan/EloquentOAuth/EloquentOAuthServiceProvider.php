@@ -55,10 +55,12 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 	protected function registerProviders($oauth)
 	{
 		$providerAliases = $this->app['config']['eloquent-oauth::providers'];
-		foreach ($providerAliases as $alias => $config) {
-			$providerClass = $this->providerLookup[$alias];
-			$provider = new $providerClass($config, new HttpClient, $this->app['request']);
-			$oauth->registerProvider($alias, $provider);
+        foreach ($providerAliases as $alias => $config) {
+            if(isset($this->providerLookup[$alias])) {
+    			$providerClass = $this->providerLookup[$alias];
+	    		$provider = new $providerClass($config, new HttpClient, $this->app['request']);
+		    	$oauth->registerProvider($alias, $provider);
+            }
 		}
 	}
 
