@@ -8,6 +8,8 @@ use Guzzle\Http\Client as HttpClient;
 
 abstract class Provider implements ProviderInterface
 {
+	protected $httpClient;
+	protected $input;
 	protected $clientId;
 	protected $clientSecret;
 	protected $redirectUri;
