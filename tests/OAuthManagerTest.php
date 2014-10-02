@@ -94,6 +94,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
 
         $stateManager->shouldReceive('verifyState')->andReturn(true);
         $provider->shouldReceive('getUserDetails')->andReturn($freshUserDetails);
+        $identities->shouldReceive('userExists')->with('provider', $freshUserDetails)->andReturn(true);
         $identities->shouldReceive('getByProvider')->with('provider', $freshUserDetails)->andReturn($existingUserDetails);
         $users->shouldReceive('create')->never();
         $users->shouldReceive('findByIdentity')->once()->andReturn($user);

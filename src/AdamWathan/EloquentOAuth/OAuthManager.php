@@ -97,7 +97,7 @@ class OAuthManager
 
     protected function userExists($provider, ProviderUserDetails $details)
     {
-        return (bool) $this->getIdentity($provider, $details);
+        return $this->identities->userExists($provider, $details);
     }
 
     protected function getExistingUser($provider, $details)

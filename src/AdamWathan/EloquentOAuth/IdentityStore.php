@@ -20,4 +20,9 @@ class IdentityStore
     {
         $identity->save();
     }
+
+    public function userExists($provider, ProviderUserDetails $details)
+    {
+        return (bool) $this->getByProvider($provider, $details);
+    }
 }
