@@ -27,5 +27,11 @@ return array(
 			'redirect' => URL::to('your/linkedin/redirect'),
 			'scope' => array(),
 		),
+		'instagram' => array(
+			'id' => '12345678',
+			'secret' => 'y0ur53cr374ppk3y',
+			'redirect' => URL::to('your/instagram/redirect'),
+			'scope' => array(),
+		),
 	)
 );
