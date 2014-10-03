@@ -10,6 +10,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
         'github' => 'AdamWathan\\EloquentOAuth\\Providers\\GitHubProvider',
         'google' => 'AdamWathan\\EloquentOAuth\\Providers\\GoogleProvider',
         'linkedin' => 'AdamWathan\\EloquentOAuth\\Providers\\LinkedInProvider',
+        'instagram' => 'AdamWathan\\EloquentOAuth\\Providers\\InstagramProvider',
     );
 
     /**
