@@ -74,12 +74,15 @@ OAuth::login('facebook', function($user, $details) {
 });
 ```
 
+> Note: The Instagram API does not allow you to retrieve the user's email address, so unfortunately that field will always be `null` for the Instagram provider.
+
 ## Supported Providers
 
 - Facebook
 - GitHub
 - Google
 - LinkedIn
+- Instagram
 
 >The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.
 
