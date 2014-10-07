@@ -1,5 +1,14 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
+/**
+ * @property-read string $accessToken
+ * @property-read string $userId
+ * @property-read string $nickname
+ * @property-read string $firstName
+ * @property-read string $lastName
+ * @property-read string $email
+ * @property-read string $imageUrl
+ */
 class ProviderUserDetails
 {
 	protected $details = array(
