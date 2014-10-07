@@ -114,4 +114,46 @@ class IdentityStoreTest extends FunctionalTestCase
 
         $this->assertEquals(1, OAuthIdentity::count());
     }
+
+    public function test_user_exists_returns_true_when_user_exists()
+    {
+        OAuthIdentity::create(array(
+            'user_id' => 2,
+            'provider' => 'facebook',
+            'provider_user_id' => 'bazfoo',
+            'access_token' => 'def456',
+            ));
+        $details = new ProviderUserDetails(array(
+            'accessToken' => 'new-token',
+            'userId' => 'bazfoo',
+            'nickname' => 'john.doe',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+        ));
+        $identities = new IdentityStore;
+        $this->assertTrue($identities->userExists('facebook', $details));
+    }
+
+    public function test_user_exists_returns_false_when_user_doesnt_exist()
+    {
+        OAuthIdentity::create(array(
+            'user_id' => 2,
+            'provider' => 'facebook',
+            'provider_user_id' => 'foobar',
+            'access_token' => 'def456',
+            ));
+        $details = new ProviderUserDetails(array(
+            'accessToken' => 'new-token',
+            'userId' => 'bazfoo',
+            'nickname' => 'john.doe',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'john.doe@example.com',
+            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+        ));
+        $identities = new IdentityStore;
+        $this->assertFalse($identities->userExists('facebook', $details));
+    }
 }

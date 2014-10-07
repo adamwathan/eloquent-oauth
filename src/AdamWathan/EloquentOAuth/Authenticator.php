@@ -9,46 +9,32 @@ use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 class Authenticator
 {
     protected $auth;
-    protected $stateManager;
     protected $users;
     protected $identities;
 
-    public function __construct(Auth $auth, StateManager $stateManager, UserStore $users, IdentityStore $identities)
+    public function __construct(Auth $auth, UserStore $users, IdentityStore $identities)
     {
         $this->auth = $auth;
-        $this->stateManager = $stateManager;
         $this->users = $users;
         $this->identities = $identities;
     }
 
-    public function login($providerAlias, $provider, Closure $callback = null)
+    public function login($providerAlias, $userDetails, Closure $callback = null)
     {
-        $this->verifyState();
-        $details = $provider->getUserDetails();
-        $user = $this->getUser($providerAlias, $details);
+        $user = $this->getUser($providerAlias, $userDetails);
         if ($callback) {
-            $callback($user, $details);
+            $callback($user, $userDetails);
         }
-        $this->updateUser($user, $provider, $details);
+        $this->updateUser($user, $providerAlias, $userDetails);
         $this->auth->login($user);
-        return $user;
-    }
-
-    protected function verifyState()
-    {
-        if (! $this->stateManager->verifyState()) {
-            throw new InvalidAuthorizationCodeException;
-        }
     }
 
     protected function getUser($provider, $details)
     {
-        if ($this->userExists($provider, $details)) {
-            $user = $this->getExistingUser($provider, $details);
-        } else {
-            $user = $this->createUser();
+        if ($this->identities->userExists($provider, $details)) {
+            return $this->getExistingUser($provider, $details);
         }
-        return $user;
+        return $this->users->create();
     }
 
     protected function updateUser($user, $provider, $details)
@@ -57,26 +43,10 @@ class Authenticator
         $this->updateAccessToken($user, $provider, $details);
     }
 
-    protected function userExists($provider, ProviderUserDetails $details)
-    {
-        return $this->identities->userExists($provider, $details);
-    }
-
     protected function getExistingUser($provider, $details)
     {
-        $identity = $this->getIdentity($provider, $details);
+        $identity = $this->identities->getByProvider($provider, $details);
         return $this->users->findByIdentity($identity);
-    }
-
-    protected function getIdentity($provider, ProviderUserDetails $details)
-    {
-        return $this->identities->getByProvider($provider, $details);
-    }
-
-    protected function createUser()
-    {
-        $user = $this->users->create();
-        return $user;
     }
 
     protected function updateAccessToken($user, $provider, ProviderUserDetails $details)

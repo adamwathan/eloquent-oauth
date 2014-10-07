@@ -1,9 +1,9 @@
 <?php
 
 use Mockery as M;
-use AdamWathan\EloquentOAuth\OAuthManager;
+use AdamWathan\EloquentOAuth\Authorizer;
 
-class OAuthManagerTest extends PHPUnit_Framework_TestCase
+class AuthorizerTest extends PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
