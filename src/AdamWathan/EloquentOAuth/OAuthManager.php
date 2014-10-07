@@ -10,19 +10,13 @@ class OAuthManager
 {
     protected $authorizer;
     protected $providers;
-    protected $auth;
-    protected $stateManager;
-    protected $users;
-    protected $identities;
+    protected $authenticator;
 
-    public function __construct(Authorizer $authorizer, ProviderRegistrar $providers, Auth $auth, StateManager $stateManager, UserStore $users, IdentityStore $identities)
+    public function __construct(Authorizer $authorizer, ProviderRegistrar $providers, Authenticator $authenticator)
     {
         $this->authorizer = $authorizer;
         $this->providers = $providers;
-        $this->auth = $auth;
-        $this->stateManager = $stateManager;
-        $this->users = $users;
-        $this->identities = $identities;
+        $this->authenticator = $authenticator;
     }
 
     public function registerProvider($alias, ProviderInterface $provider)
@@ -35,92 +29,13 @@ class OAuthManager
         return $this->authorizer->authorize($this->getProvider($providerAlias));
     }
 
-    public function login($provider, Closure $callback = null)
+    public function login($providerAlias, Closure $callback = null)
     {
-        $this->verifyState();
-        $details = $this->getUserDetails($provider);
-        $user = $this->getUser($provider, $details);
-        if ($callback) {
-            $callback($user, $details);
-        }
-        $this->updateUser($user, $provider, $details);
-        $this->auth->login($user);
-        return $user;
+        return $this->authenticator->login($providerAlias, $this->getProvider($providerAlias), $callback);
     }
 
     protected function getProvider($providerAlias)
     {
         return $this->providers->getProvider($providerAlias);
-    }
-
-    protected function verifyState()
-    {
-        if (! $this->stateManager->verifyState()) {
-            throw new InvalidAuthorizationCodeException;
-        }
-    }
-
-    protected function getUserDetails($provider)
-    {
-        return $this->getProvider($provider)->getUserDetails();
-    }
-
-    protected function getUser($provider, $details)
-    {
-        if ($this->userExists($provider, $details)) {
-            $user = $this->getExistingUser($provider, $details);
-        } else {
-            $user = $this->createUser();
-        }
-        return $user;
-    }
-
-    protected function updateUser($user, $provider, $details)
-    {
-        $this->users->store($user);
-        $this->updateAccessToken($user, $provider, $details);
-    }
-
-    protected function userExists($provider, ProviderUserDetails $details)
-    {
-        return $this->identities->userExists($provider, $details);
-    }
-
-    protected function getExistingUser($provider, $details)
-    {
-        $identity = $this->getIdentity($provider, $details);
-        return $this->users->findByIdentity($identity);
-    }
-
-    protected function getIdentity($provider, ProviderUserDetails $details)
-    {
-        return $this->identities->getByProvider($provider, $details);
-    }
-
-    protected function createUser()
-    {
-        $user = $this->users->create();
-        return $user;
-    }
-
-    protected function updateAccessToken($user, $provider, ProviderUserDetails $details)
-    {
-        $this->flushAccessTokens($user, $provider);
-        $this->addAccessToken($user, $provider, $details);
-    }
-
-    protected function flushAccessTokens($user, $provider)
-    {
-        $this->identities->flush($user, $provider);
-    }
-
-    protected function addAccessToken($user, $provider, ProviderUserDetails $details)
-    {
-        $identity = new OAuthIdentity;
-        $identity->user_id = $user->getKey();
-        $identity->provider = $provider;
-        $identity->provider_user_id = $details->userId;
-        $identity->access_token = $details->accessToken;
-        $this->identities->store($identity);
     }
 }
