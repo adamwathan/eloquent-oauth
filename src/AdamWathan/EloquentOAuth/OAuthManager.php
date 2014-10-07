@@ -9,14 +9,16 @@ use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 class OAuthManager
 {
     protected $authorizer;
-    protected $providers;
     protected $authenticator;
+    protected $stateManager;
+    protected $providers;
 
-    public function __construct(Authorizer $authorizer, ProviderRegistrar $providers, Authenticator $authenticator)
+    public function __construct(Authorizer $authorizer, Authenticator $authenticator, StateManager $stateManager, ProviderRegistrar $providers)
     {
         $this->authorizer = $authorizer;
-        $this->providers = $providers;
         $this->authenticator = $authenticator;
+        $this->stateManager = $stateManager;
+        $this->providers = $providers;
     }
 
     public function registerProvider($alias, ProviderInterface $provider)
@@ -26,12 +28,17 @@ class OAuthManager
 
     public function authorize($providerAlias)
     {
-        return $this->authorizer->authorize($this->getProvider($providerAlias));
+        $state = $this->stateManager->generateState();
+        return $this->authorizer->authorize($this->getProvider($providerAlias), $state);
     }
 
     public function login($providerAlias, Closure $callback = null)
     {
-        return $this->authenticator->login($providerAlias, $this->getProvider($providerAlias), $callback);
+        if (! $this->stateManager->verifyState()) {
+            throw new InvalidAuthorizationCodeException;
+        }
+        $details = $this->getProvider($providerAlias)->getUserDetails();
+        return $this->authenticator->login($providerAlias, $details, $callback);
     }
 
     protected function getProvider($providerAlias)

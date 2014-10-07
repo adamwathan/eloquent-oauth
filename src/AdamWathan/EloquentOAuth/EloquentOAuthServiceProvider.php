@@ -47,9 +47,9 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
         $this->configureOAuthIdentitiesTable();
         $users = new UserStore($app['config']['auth.model']);
         $stateManager = new StateManager($app['session.store'], $app['request']);
-        $authorizer = new Authorizer($app['redirect'], $stateManager);
-        $authenticator = new Authenticator($app['auth'], $stateManager, $users, new IdentityStore);
-        $oauth = new OAuthManager($authorizer, new ProviderRegistrar, $authenticator);
+        $authorizer = new Authorizer($app['redirect']);
+        $authenticator = new Authenticator($app['auth'], $users, new IdentityStore);
+        $oauth = new OAuthManager($authorizer, $authenticator, $stateManager, new ProviderRegistrar);
         $this->registerProviders($oauth);
         return $oauth;
     });
