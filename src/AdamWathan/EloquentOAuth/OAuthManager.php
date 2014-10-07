@@ -2,24 +2,24 @@
 
 use Closure;
 use Illuminate\Auth\AuthManager as Auth;
-use Illuminate\Routing\Redirector as Redirect;
 use AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
 
 class OAuthManager
 {
+    protected $authorizer;
+    protected $providers;
     protected $auth;
-    protected $redirect;
     protected $stateManager;
     protected $users;
     protected $identities;
-    protected $providers = array();
 
-    public function __construct(Auth $auth, Redirect $redirect, StateManager $stateManager, UserStore $users, IdentityStore $identities)
+    public function __construct(Authorizer $authorizer, ProviderRegistrar $providers, Auth $auth, StateManager $stateManager, UserStore $users, IdentityStore $identities)
     {
+        $this->authorizer = $authorizer;
+        $this->providers = $providers;
         $this->auth = $auth;
-        $this->redirect = $redirect;
         $this->stateManager = $stateManager;
         $this->users = $users;
         $this->identities = $identities;
@@ -27,13 +27,12 @@ class OAuthManager
 
     public function registerProvider($alias, ProviderInterface $provider)
     {
-        $this->providers[$alias] = $provider;
+        $this->providers->registerProvider($alias, $provider);
     }
 
-    public function authorize($provider)
+    public function authorize($providerAlias)
     {
-        $state = $this->generateState();
-        return $this->redirect->to($this->getProvider($provider)->authorizeUrl($state));
+        return $this->authorizer->authorize($this->getProvider($providerAlias));
     }
 
     public function login($provider, Closure $callback = null)
@@ -49,22 +48,9 @@ class OAuthManager
         return $user;
     }
 
-    protected function generateState()
-    {
-        return $this->stateManager->generateState();
-    }
-
     protected function getProvider($providerAlias)
     {
-        if (! $this->hasProvider($providerAlias)) {
-            throw new ProviderNotRegisteredException("No provider has been registered under the alias '{$providerAlias}'");
-        }
-        return $this->providers[$providerAlias];
-    }
-
-    protected function hasProvider($alias)
-    {
-        return isset($this->providers[$alias]);
+        return $this->providers->getProvider($providerAlias);
     }
 
     protected function verifyState()
