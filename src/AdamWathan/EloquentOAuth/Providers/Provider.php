@@ -5,6 +5,7 @@ use AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use Illuminate\Http\Request as Input;
 use Guzzle\Http\Client as HttpClient;
+use Guzzle\Http\Exception\BadResponseException;
 
 abstract class Provider implements ProviderInterface
 {
@@ -92,7 +93,7 @@ abstract class Provider implements ProviderInterface
 		$request = $this->httpClient->post($url, $this->headers['access_token'], $this->buildAccessTokenPostBody());
 		try {
 			$response = $request->send();
-		} catch (\Exception $e) {
+		} catch (BadResponseException $e) {
 			throw new InvalidAuthorizationCodeException((string) $e->getResponse());
 		}
 		return $this->parseTokenResponse((string) $response->getBody());
