@@ -33,11 +33,7 @@ class InstagramProvider extends Provider
 
 	protected function parseTokenResponse($response)
 	{
-		$data = json_decode($response);
-		if (! isset($data->access_token)) {
-			throw new InvalidAuthorizationCodeException;
-		}
-		return $data->access_token;
+		return $this->parseJsonTokenResponse($response);
 	}
 
 	protected function requestUserData()

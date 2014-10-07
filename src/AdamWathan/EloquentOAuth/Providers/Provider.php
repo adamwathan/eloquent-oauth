@@ -132,6 +132,15 @@ abstract class Provider implements ProviderInterface
 		return $this->input->get('code');
 	}
 
+	protected function parseJsonTokenResponse($response)
+	{
+		$response = json_decode($response);
+		if (! isset($response->access_token)) {
+			throw new InvalidAuthorizationCodeException;
+		}
+		return $response->access_token;
+	}
+
 	abstract protected function getAuthorizeUrl();
 	abstract protected function getAccessTokenBaseUrl();
 	abstract protected function getUserDataUrl();

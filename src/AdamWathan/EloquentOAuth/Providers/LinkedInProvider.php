@@ -46,11 +46,7 @@ class LinkedInProvider extends Provider
 
 	protected function parseTokenResponse($response)
 	{
-		$response = json_decode($response);
-		if (! isset($response->access_token)) {
-			throw new InvalidAuthorizationCodeException;
-		}
-		return $response->access_token;
+		return $this->parseJsonTokenResponse($response);
 	}
 
 	protected function buildUserDataUrl()
