@@ -11,7 +11,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
         'google' => 'AdamWathan\\EloquentOAuth\\Providers\\GoogleProvider',
         'linkedin' => 'AdamWathan\\EloquentOAuth\\Providers\\LinkedInProvider',
         'instagram' => 'AdamWathan\\EloquentOAuth\\Providers\\InstagramProvider',
-    );
+        );
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -42,17 +42,16 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 
     protected function registerOAuthManager()
     {
-        $this->app['adamwathan.oauth'] = $this->app->share(function($app)
-    {
-        $this->configureOAuthIdentitiesTable();
-        $users = new UserStore($app['config']['auth.model']);
-        $stateManager = new StateManager($app['session.store'], $app['request']);
-        $authorizer = new Authorizer($app['redirect']);
-        $authenticator = new Authenticator($app['auth'], $users, new IdentityStore);
-        $oauth = new OAuthManager($authorizer, $authenticator, $stateManager, new ProviderRegistrar);
-        $this->registerProviders($oauth);
-        return $oauth;
-    });
+        $this->app['adamwathan.oauth'] = $this->app->share(function ($app) {
+            $this->configureOAuthIdentitiesTable();
+            $users = new UserStore($app['config']['auth.model']);
+            $stateManager = new StateManager($app['session.store'], $app['request']);
+            $authorizer = new Authorizer($app['redirect']);
+            $authenticator = new Authenticator($app['auth'], $users, new IdentityStore);
+            $oauth = new OAuthManager($authorizer, $authenticator, $stateManager, new ProviderRegistrar);
+            $this->registerProviders($oauth);
+            return $oauth;
+        });
     }
 
     protected function registerProviders($oauth)
