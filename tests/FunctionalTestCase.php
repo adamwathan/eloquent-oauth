@@ -13,13 +13,13 @@ abstract class FunctionalTestCase extends PHPUnit_Framework_TestCase
     protected function configureDatabase()
     {
         $db = new DB;
-        $db->addConnection([
+        $db->addConnection(array(
             'driver'    => 'sqlite',
             'database'  => ':memory:',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-            ]);
+        ));
         $db->bootEloquent();
         $db->setAsGlobal();
     }
