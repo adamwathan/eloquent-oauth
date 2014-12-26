@@ -4,7 +4,7 @@ use AdamWathan\EloquentOAuth\ProviderUserDetails as UserDetails;
 use AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use Illuminate\Http\Request as Input;
-use Guzzle\Http\Client as HttpClient;
+use GuzzleHttp\Client as HttpClient;
 
 abstract class Provider implements ProviderInterface
 {
