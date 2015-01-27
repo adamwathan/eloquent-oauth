@@ -35,8 +35,8 @@ Once the `login` method succeeds, the user will be authenticated and available v
 had logged in through your application normally.
 
 ```php
-use \AdamWathan\EloquentOAuth\ApplicationRejectedException;
-use \AdamWathan\EloquentOAuth\InvalidAuthorizationCodeException;
+use \AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
+use \AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 
 Route::get('facebook/login', function() {
     try {
