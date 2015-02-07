@@ -76,7 +76,7 @@ abstract class Provider implements ProviderInterface
             'lastName' => $this->lastName(),
             'email' => $this->email(),
             'imageUrl' => $this->imageUrl(),
-            ));
+        ), $this->providerUserData);
     }
 
     protected function getProviderUserData($key)
