@@ -23,7 +23,7 @@ class ProviderUserDetails
 
     protected $raw = array();
 
-    public function __construct($details, $raw = [])
+    public function __construct($details, $raw = array())
     {
         $this->addDetails($details);
         $this->raw =  $raw;
