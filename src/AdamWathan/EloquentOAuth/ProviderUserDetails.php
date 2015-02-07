@@ -21,7 +21,7 @@ class ProviderUserDetails
         'imageUrl' => null,
     );
 
-    protected $raw = [];
+    protected $raw = array();
 
     public function __construct($details, $raw = [])
     {
