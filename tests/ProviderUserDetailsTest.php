@@ -31,4 +31,18 @@ class ProviderUserDetailsTest extends PHPUnit_Framework_TestCase
             ));
         $this->assertNull($details->userId);
     }
+
+    public function test_can_retrieve_raw_details()
+    {
+        $normalized = array(
+            'accessToken' => 'abc123',
+        );
+
+        $raw = array(
+            'otherField' => 'foobar',
+        );
+
+        $details = new ProviderUserDetails($normalized, $raw);
+        $this->assertEquals($raw, $details->raw());
+    }
 }

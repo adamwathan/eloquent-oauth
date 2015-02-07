@@ -21,9 +21,12 @@ class ProviderUserDetails
         'imageUrl' => null,
     );
 
-    public function __construct($details)
+    protected $raw = [];
+
+    public function __construct($details, $raw = [])
     {
         $this->addDetails($details);
+        $this->raw =  $raw;
     }
 
     protected function addDetails($details = array())
@@ -31,6 +34,11 @@ class ProviderUserDetails
         foreach ($details as $key => $value) {
             $this->details[$key] = $value;
         }
+    }
+
+    public function raw()
+    {
+        return $this->raw;
     }
 
     public function __get($key)
