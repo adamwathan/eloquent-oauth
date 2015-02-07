@@ -3,6 +3,8 @@
 [![Code Climate](https://codeclimate.com/github/adamwathan/eloquent-oauth/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/eloquent-oauth)
 [![Build Status](https://api.travis-ci.org/adamwathan/eloquent-oauth.svg)](https://travis-ci.org/adamwathan/eloquent-oauth)
 
+> Note: Laravel 5 support is coming soon :) 
+
 Eloquent OAuth is a package for Laravel 4 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your app keys/secrets in a config file, run a migration and from then on it's just two method calls and you have OAuth integration.
 
 ## Usage
