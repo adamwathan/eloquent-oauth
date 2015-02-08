@@ -28,7 +28,7 @@ class InstallCommand extends Command
     public function publishConfig()
     {
         try {
-            $this->publishFile(__DIR__ . '/../../config/config.php', config_path() . '/eloquent-oauth.php');
+            $this->publishFile(__DIR__ . '/../../config/eloquent-oauth.php', config_path() . '/eloquent-oauth.php');
             $this->info('Configuration published.');
         } catch (FileExistsException $e) {
             $this->error('Package configuration already exists. Use --force to override.');
