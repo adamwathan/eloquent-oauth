@@ -3,6 +3,12 @@
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Config;
 
+/**
+ * @property integer $user_id
+ * @property string $provider_user_id
+ * @property string $provider
+ * @property string $access_token
+ */
 class OAuthIdentity extends Eloquent
 {
     protected static $configuredTable = 'oauth_identities';
