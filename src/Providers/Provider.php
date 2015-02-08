@@ -14,13 +14,13 @@ abstract class Provider implements ProviderInterface
     protected $clientId;
     protected $clientSecret;
     protected $redirectUri;
-    protected $scope = array();
+    protected $scope = [];
 
-    protected $headers = array(
-        'authorize' => array(),
-        'access_token' => array(),
-        'user_details' => array(),
-        );
+    protected $headers = [
+        'authorize' => [],
+        'access_token' => [],
+        'user_details' => [],
+    ];
 
     protected $accessToken;
     protected $providerUserData;
@@ -68,7 +68,7 @@ abstract class Provider implements ProviderInterface
     {
         $this->accessToken = $this->requestAccessToken();
         $this->providerUserData = $this->requestUserData();
-        return new UserDetails(array(
+        return new UserDetails([
             'accessToken' => $this->accessToken,
             'userId' => $this->userId(),
             'nickname' => $this->nickname(),
@@ -76,7 +76,7 @@ abstract class Provider implements ProviderInterface
             'lastName' => $this->lastName(),
             'email' => $this->email(),
             'imageUrl' => $this->imageUrl(),
-        ), $this->providerUserData);
+        ], $this->providerUserData);
     }
 
     protected function getProviderUserData($key)

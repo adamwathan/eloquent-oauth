@@ -5,13 +5,13 @@ use GuzzleHttp\Client as HttpClient;
 
 class EloquentOAuthServiceProvider extends ServiceProvider {
 
-    protected $providerLookup = array(
+    protected $providerLookup = [
         'facebook' => 'AdamWathan\\EloquentOAuth\\Providers\\FacebookProvider',
         'github' => 'AdamWathan\\EloquentOAuth\\Providers\\GitHubProvider',
         'google' => 'AdamWathan\\EloquentOAuth\\Providers\\GoogleProvider',
         'linkedin' => 'AdamWathan\\EloquentOAuth\\Providers\\LinkedInProvider',
         'instagram' => 'AdamWathan\\EloquentOAuth\\Providers\\InstagramProvider',
-        );
+    ];
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -79,7 +79,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return array('adamwathan.oauth');
+        return ['adamwathan.oauth'];
     }
 
 }

@@ -7,18 +7,18 @@ class GitHubProvider extends Provider
     protected $authorizeUrl = "https://github.com/login/oauth/authorize";
     protected $accessTokenUrl = "https://github.com/login/oauth/access_token";
     protected $userDataUrl = "https://api.github.com/user";
-    protected $scope = array(
+    protected $scope = [
         'user:email',
-    );
+    ];
 
-    protected $headers = array(
-        'authorize' => array(),
-        'access_token' => array(
+    protected $headers = [
+        'authorize' => [],
+        'access_token' => [
             'Accept' => 'application/json'
-        ),
-        'user_details' => array(
+        ],
+        'user_details' => [
             'Accept' => 'application/vnd.github.v3'
-        ),
+        ],
     );
 
     protected function getAuthorizeUrl()

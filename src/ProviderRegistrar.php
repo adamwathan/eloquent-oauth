@@ -5,7 +5,7 @@ use AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException;
 
 class ProviderRegistrar
 {
-    private $providers = array();
+    private $providers = [];
 
     public function registerProvider($alias, ProviderInterface $provider)
     {

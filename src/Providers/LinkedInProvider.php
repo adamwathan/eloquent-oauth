@@ -7,17 +7,17 @@ class LinkedInProvider extends Provider
     protected $authorizeUrl = "https://www.linkedin.com/uas/oauth2/authorization";
     protected $accessTokenUrl = "https://www.linkedin.com/uas/oauth2/accessToken";
     protected $userDataUrl = "https://api.linkedin.com/v1/people/~";
-    protected $scope = array(
+    protected $scope = [
         'r_basicprofile',
         'r_emailaddress',
-    );
-    protected $profileFields = array(
+    ];
+    protected $profileFields = [
         'id',
         'first-name',
         'last-name',
         'email-address',
         'picture-url',
-    );
+    ];
 
     protected function compileScopes()
     {

@@ -7,9 +7,9 @@ class InstagramProvider extends Provider
     protected $authorizeUrl = "https://api.instagram.com/oauth/authorize";
     protected $accessTokenUrl = "https://api.instagram.com/oauth/access_token";
     protected $userDataUrl = "https://api.instagram.com/v1/users/self";
-    protected $scope = array(
+    protected $scope = [
         'basic',
-    );
+    ];
 
     protected function getAuthorizeUrl()
     {
