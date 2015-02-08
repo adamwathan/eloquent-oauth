@@ -119,7 +119,7 @@ class MigrationPublisher
      */
     protected function getNewMigrationName($file, $add)
     {
-        return Carbon::now()->addSeconds($add)->format('Y_m_d_His').substr(basename($file), 17);
+        return Carbon::now()->addSeconds($add)->format('Y_m_d_His').basename($file);
     }
 
 }
