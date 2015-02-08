@@ -18,7 +18,7 @@ class GoogleProvider extends Provider
             'Content-Type' => 'application/x-www-form-urlencoded'
         ],
         'user_details' => [],
-    );
+    ];
 
     protected function compileScopes()
     {
