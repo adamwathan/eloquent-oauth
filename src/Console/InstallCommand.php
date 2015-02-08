@@ -6,16 +6,16 @@ use Symfony\Component\Console\Input\InputOption;
 
 class InstallCommand extends Command
 {
+    protected $filesystem;
+    protected $migrationPublisher;
     protected $name = 'eloquent-oauth:install';
-
     protected $description = 'Install package config and migrations';
 
-    protected $filesystem;
-
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Filesystem $filesystem, MigrationPublisher $migrationPublisher)
     {
         parent::__construct();
         $this->filesystem = $filesystem;
+        $this->migrationPublisher = $migrationPublisher;
     }
 
     public function handle()
@@ -28,13 +28,15 @@ class InstallCommand extends Command
     public function publishConfig()
     {
         $this->publishFile(__DIR__ . '/../../config/config.php', config_path() . '/eloquent-oauth.php');
+        $this->info('Configuration published.');
     }
 
     public function publishMigrations()
     {
-        $from = __DIR__ . '/../../migrations/create_oauth_identities_table.php';
-        $to = base_path() . '/database/migrations/' . date('Y_m_d_His') . '_' . 'create_oauth_identities_table.php';
-        $this->publishFile($from, $to);
+        $from = __DIR__ . '/../../migrations';
+        $to = base_path() . '/database/migrations';
+        $this->migrationPublisher->publish($from, $to);
+        $this->info('Migrations published.');
     }
 
     public function publishFile($from, $to)
@@ -44,8 +46,6 @@ class InstallCommand extends Command
         }
 
         $this->filesystem->copy($from, $to);
-
-        $this->info('Published: ' . $to);
     }
 
     protected function getOptions()
