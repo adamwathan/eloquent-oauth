@@ -1,37 +1,37 @@
 <?php
 
-return array(
+return [
 	'table' => 'oauth_identities',
-	'providers' => array(
-		'facebook' => array(
+	'providers' => [
+		'facebook' => [
 			'id' => '12345678',
 			'secret' => 'y0ur53cr374ppk3y',
 			'redirect' => 'your/facebook/redirect',
-			'scope' => array(),
-		),
-		'google' => array(
+			'scope' => [],
+		],
+		'google' => [
 			'id' => '12345678',
 			'secret' => 'y0ur53cr374ppk3y',
 			'redirect' => 'your/google/redirect',
-			'scope' => array(),
-		),
-		'github' => array(
+			'scope' => [],
+		],
+		'github' => [
 			'id' => '12345678',
 			'secret' => 'y0ur53cr374ppk3y',
 			'redirect' => 'your/github/redirect',
-			'scope' => array(),
-		),
-		'linkedin' => array(
+			'scope' => [],
+		],
+		'linkedin' => [
 			'id' => '12345678',
 			'secret' => 'y0ur53cr374ppk3y',
 			'redirect' => 'your/linkedin/redirect',
-			'scope' => array(),
-		),
-		'instagram' => array(
+			'scope' => [],
+		],
+		'instagram' => [
 			'id' => '12345678',
 			'secret' => 'y0ur53cr374ppk3y',
 			'redirect' => 'your/instagram/redirect',
-			'scope' => array(),
-		),
-	)
-);
+			'scope' => [],
+		],
+	],
+];
