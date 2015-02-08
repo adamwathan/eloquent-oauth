@@ -5,18 +5,13 @@ use Illuminate\Filesystem\Filesystem;
 
 class MigrationPublisher
 {
-    /**
-     * A cache of migrations at a given destination.
-     *
-     * @var array
-     */
+    protected $files;
     protected $existing = array();
 
     /**
      * Create a new migration publisher instance.
      *
      * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @return void
      */
     public function __construct(Filesystem $files)
     {
