@@ -3,9 +3,92 @@
 [![Code Climate](https://codeclimate.com/github/adamwathan/eloquent-oauth/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/eloquent-oauth)
 [![Build Status](https://api.travis-ci.org/adamwathan/eloquent-oauth.svg)](https://travis-ci.org/adamwathan/eloquent-oauth)
 
-> Note: Check the [Laravel 5 branch](https://github.com/adamwathan/eloquent-oauth/tree/laravel-5) if you are using Laravel 5.
+Eloquent OAuth is a package for Laravel 5 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your client IDs and secrets in a config file, run a migration and after that it's just two method calls and you have OAuth integration.
 
-Eloquent OAuth is a package for Laravel 4 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your app keys/secrets in a config file, run a migration and from then on it's just two method calls and you have OAuth integration.
+#### Basic example
+
+```php
+// Redirect to Facebook for authorization
+Route::get('facebook/authorize', function() {
+    return OAuth::authorize('facebook');
+});
+
+// Facebook redirects here after authorization
+Route::get('facebook/login', function() {
+    
+    // Automatically log in existing users
+    // or create a new user if necessary.
+    OAuth::login('facebook');
+
+    // Current user is now available via Auth facade
+    $user = Auth::user();
+
+    return Redirect::intended();
+});
+```
+
+## Installation
+
+Add this package to `composer.json` to install via Packagist:
+
+`"adamwathan/eloquent-oauth": "dev-laravel-5"`
+
+...then run `composer update` to download the package to your vendor directory.
+
+#### Update your config
+
+Add the service provider to the `providers` array in `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
+    // ...
+]
+```
+
+Add the facade to the `aliases` array in `config/app.php`:
+
+```php
+'aliases' => [
+    // ...
+    'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
+    // ...
+]
+```
+
+#### Publish the package configuration
+
+Publish the configuration file and migrations by running the provided console command:
+
+`php artisan eloquent-oauth:install`
+
+Next, re-migrate your database:
+
+`php artisan migrate`
+
+> If you need to change the name of the table used to store OAuth identities, you can do so in the `eloquent-oauth` config file.
+
+#### Configure the providers
+
+Update your app information for the providers you are using in `config/eloquent-oauth.php`:
+
+```php
+'providers' => [
+    'facebook' => [
+        'id' => '12345678',
+        'secret' => 'y0ur53cr374ppk3y',
+        'redirect' => 'https://example.com/facebook/login'),
+        'scope' => [],
+    ]
+]
+```
+
+> Each provider is preconfigured with the scope necessary to retrieve basic user information and the user's email address, so the scope array can usually be left empty unless you need specific additional permissions. Consult the provider's API documentation to find out what permissions are available for the various services.
+
+All done!
+
+> Eloquent OAuth is designed to integrate with Laravel's Eloquent authentication driver, so be sure you are using the `eloquent` driver in `app/config/auth.php`. You can define your actual `User` model however you choose and add whatever behavior you need, just be sure to specify the model you are using with its fully qualified namespace in `app/config/auth.php` as well.
 
 ## Usage
 
@@ -92,70 +175,3 @@ OAuth::login('facebook', function($user, $details) {
 >The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.
 
 >Feel free to open an issue if you would like support for a particular provider, or even better, submit a pull request.
-
-## Installation
-
-Require this package in your `composer.json` file to install via Packagist:
-
-`"adamwathan/eloquent-oauth": "dev-master"`
-
-...then run `composer update` to download the package to your vendor directory.
-
-Add the service provider to the `providers` array in `app/config/app.php`:
-
-```php
-'providers' => array(
-    // ...
-    'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
-    // ...
-)
-```
-
-Add the facade to the `aliases` array in `app/config/app.php`:
-
-```php
-'aliases' => array(
-    // ...
-    'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
-    // ...
-)
-```
-
-Publish the configuration file:
-
-`php artisan config:publish adamwathan/eloquent-oauth`
-
-Update your app information for the providers you are using in `app/config/packages/adamwathan/eloquent-oauth/config.php`:
-
-```php
-'providers' => array(
-    'facebook' => array(
-        'id' => '12345678',
-        'secret' => 'y0ur53cr374ppk3y',
-        'redirect' => URL::to('facebook/login'),
-        'scope' => array(),
-    )
-)
-```
-> Note: Each provider is preconfigured with the necessary scope to retrieve basic user information as well as the user's email address, so the scope array can usually be left empty unless you need specific additional permissions. Consult the provider's API documentation to find out what permissions are available for the various services.
-
-If you need to change the name of the table used to store OAuth identities, you can do so in the same config file:
-
-```php
-'table' => 'social_login_tokens',
-```
-
-Publish and run the migration:
-
-```
-php artisan migrate:publish adamwathan/eloquent-oauth
-php artisan migrate
-```
-
-All done!
-
-## Notes
-
-Eloquent OAuth is designed to integrate with Laravel's Eloquent authentication driver, so be sure you are using the `eloquent`
-driver in `app/config/auth.php`. You can define your actual `User` model however you choose and add whatever behavior you need,
-just be sure to specify the model you are using with its fully qualified namespace in `app/config/auth.php` as well.
