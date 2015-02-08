@@ -19,7 +19,7 @@ class GitHubProvider extends Provider
         'user_details' => [
             'Accept' => 'application/vnd.github.v3'
         ],
-    );
+    ];
 
     protected function getAuthorizeUrl()
     {
