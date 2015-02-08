@@ -21,29 +21,20 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
     protected $defer = false;
 
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->package('adamwathan/eloquent-oauth');
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void
      */
     public function register()
     {
+        $this->configureOAuthIdentitiesTable();
         $this->registerOAuthManager();
+        $this->registerCommands();
     }
 
     protected function registerOAuthManager()
     {
         $this->app['adamwathan.oauth'] = $this->app->share(function ($app) {
-            $this->configureOAuthIdentitiesTable();
             $users = new UserStore($app['config']['auth.model']);
             $stateManager = new StateManager($app['session.store'], $app['request']);
             $authorizer = new Authorizer($app['redirect']);
@@ -56,7 +47,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 
     protected function registerProviders($oauth)
     {
-        $providerAliases = $this->app['config']['eloquent-oauth::providers'];
+        $providerAliases = $this->app['config']['eloquent-oauth.providers'];
         foreach ($providerAliases as $alias => $config) {
             if(isset($this->providerLookup[$alias])) {
                 $providerClass = $this->providerLookup[$alias];
@@ -68,7 +59,17 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
 
     protected function configureOAuthIdentitiesTable()
     {
-        OAuthIdentity::configureTable($this->app['config']['eloquent-oauth::table']);
+        OAuthIdentity::configureTable($this->app['config']['eloquent-oauth.table']);
+    }
+
+    /**
+     * Registers some utility commands with artisan
+     * @return void
+     */
+    public function registerCommands()
+    {
+        $this->app->bind('command.eloquent-oauth.install', 'AdamWathan\EloquentOAuth\Console\InstallCommand');
+        $this->commands('command.eloquent-oauth.install');
     }
 
     /**
