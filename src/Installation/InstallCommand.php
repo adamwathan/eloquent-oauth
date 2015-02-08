@@ -1,4 +1,4 @@
-<?php namespace AdamWathan\EloquentOAuth\Console;
+<?php namespace AdamWathan\EloquentOAuth\Installation;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -27,8 +27,12 @@ class InstallCommand extends Command
 
     public function publishConfig()
     {
-        $this->publishFile(__DIR__ . '/../../config/config.php', config_path() . '/eloquent-oauth.php');
-        $this->info('Configuration published.');
+        try {
+            $this->publishFile(__DIR__ . '/../../config/config.php', config_path() . '/eloquent-oauth.php');
+            $this->info('Configuration published.');
+        } catch (FileExistsException $e) {
+            $this->error('Package configuration already exists. Use --force to override.');
+        }
     }
 
     public function publishMigrations()
@@ -42,7 +46,7 @@ class InstallCommand extends Command
     public function publishFile($from, $to)
     {
         if ($this->filesystem->exists($to) && ! $this->option('force')) {
-            return;
+            throw new FileExistsException;
         }
 
         $this->filesystem->copy($from, $to);

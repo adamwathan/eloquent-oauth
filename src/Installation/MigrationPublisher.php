@@ -1,4 +1,4 @@
-<?php namespace AdamWathan\EloquentOAuth\Console;
+<?php namespace AdamWathan\EloquentOAuth\Installation;
 
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;

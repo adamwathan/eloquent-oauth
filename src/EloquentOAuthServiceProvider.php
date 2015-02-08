@@ -68,7 +68,7 @@ class EloquentOAuthServiceProvider extends ServiceProvider {
      */
     public function registerCommands()
     {
-        $this->app->bind('command.eloquent-oauth.install', 'AdamWathan\EloquentOAuth\Console\InstallCommand');
+        $this->app->bind('command.eloquent-oauth.install', 'AdamWathan\EloquentOAuth\Installation\InstallCommand');
         $this->commands('command.eloquent-oauth.install');
     }
 
