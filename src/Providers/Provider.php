@@ -37,7 +37,7 @@ abstract class Provider implements ProviderInterface
         }
     }
 
-    public function redirectUri()
+    protected function redirectUri()
     {
         return $this->redirectUri;
     }
@@ -53,7 +53,7 @@ abstract class Provider implements ProviderInterface
     {
         $queryString = "client_id=".$this->clientId;
         $queryString .= "&scope=".urlencode($this->compileScopes());
-        $queryString .= "&redirect_uri=".$this->redirectUri;
+        $queryString .= "&redirect_uri=".$this->redirectUri();
         $queryString .= "&response_type=code";
         $queryString .= "&state=".$state;
         return $queryString;

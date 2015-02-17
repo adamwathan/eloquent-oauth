@@ -11,24 +11,6 @@ class ProviderTest extends PHPUnit_Framework_TestCase
         M::close();
     }
 
-    public function test_can_get_redirect_uri()
-    {
-        $redirectUri = 'http://myapp.dev/provider/login';
-        $config = array(
-            'id' => '1',
-            'secret' => 'foobar',
-            'redirect' => $redirectUri,
-            );
-        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
-        $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
-
-        $provider = new Provider($config, $httpClient, $input);
-
-        $expected = $redirectUri;
-        $result = $provider->redirectUri();
-        $this->assertEquals($expected, $result);
-    }
-
     public function test_can_get_authorize_url()
     {
         $redirectUri = 'http://myapp.dev/provider/login';
