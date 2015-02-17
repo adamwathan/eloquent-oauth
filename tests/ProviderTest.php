@@ -19,7 +19,7 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
@@ -37,7 +37,7 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
@@ -56,13 +56,13 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
 
-        $httpClient->shouldReceive('post->send->getBody')->andReturn('abc123');
-        $httpClient->shouldReceive('get->send->getBody')->andReturn('{"user_id":"1","nick_name":"john.doe","first_name":"John","last_name":"Doe","email":"john.doe@example.com","photo":"http:\/\/example.com\/photos\/john_doe.jpg"}');
+        $httpClient->shouldReceive('post->getBody')->andReturn('abc123');
+        $httpClient->shouldReceive('get->getBody')->andReturn('{"user_id":"1","nick_name":"john.doe","first_name":"John","last_name":"Doe","email":"john.doe@example.com","photo":"http:\/\/example.com\/photos\/john_doe.jpg"}');
         $input->shouldReceive('has')->andReturn(true);
         $input->shouldReceive('get')->andReturn('authorization-code');
 
@@ -87,13 +87,13 @@ class ProviderTest extends PHPUnit_Framework_TestCase
             'secret' => 'foobar',
             'redirect' => $redirectUri,
             );
-        $httpClient = M::mock('Guzzle\\Http\\Client')->shouldIgnoreMissing();
+        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
         $provider = new Provider($config, $httpClient, $input);
 
-        $httpClient->shouldReceive('post->send->getBody')->andReturn('abc123');
-        $httpClient->shouldReceive('get->send->getBody')->andReturn('{"user_id":"1","nick_name":"john.doe","first_name":"John","last_name":"Doe","email":"john.doe@example.com","photo":"http:\/\/example.com\/photos\/john_doe.jpg"}');
+        $httpClient->shouldReceive('post->getBody')->andReturn('abc123');
+        $httpClient->shouldReceive('get->getBody')->andReturn('{"user_id":"1","nick_name":"john.doe","first_name":"John","last_name":"Doe","email":"john.doe@example.com","photo":"http:\/\/example.com\/photos\/john_doe.jpg"}');
         $input->shouldReceive('has')->andReturn(false);
 
         $details = $provider->getUserDetails();

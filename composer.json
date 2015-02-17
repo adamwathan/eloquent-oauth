@@ -14,7 +14,7 @@
         "illuminate/session": "4.*",
         "illuminate/database": "4.*",
         "illuminate/support": "4.*",
-        "guzzle/guzzle": "~3.7"
+        "guzzlehttp/guzzle": "~5.0"
     },
     "require-dev": {
         "mockery/mockery": "0.8.0"

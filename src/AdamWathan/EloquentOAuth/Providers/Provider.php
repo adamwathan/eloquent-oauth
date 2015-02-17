@@ -4,8 +4,8 @@ use AdamWathan\EloquentOAuth\ProviderUserDetails as UserDetails;
 use AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use Illuminate\Http\Request as Input;
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Exception\BadResponseException;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\BadResponseException;
 
 abstract class Provider implements ProviderInterface
 {
@@ -90,9 +90,11 @@ abstract class Provider implements ProviderInterface
     protected function requestAccessToken()
     {
         $url = $this->getAccessTokenBaseUrl();
-        $request = $this->httpClient->post($url, $this->headers['access_token'], $this->buildAccessTokenPostBody());
         try {
-            $response = $request->send();
+            $response = $this->httpClient->post($url, [
+                'headers' => $this->headers['access_token'],
+                'body' => $this->buildAccessTokenPostBody(),
+            ]);
         } catch (BadResponseException $e) {
             throw new InvalidAuthorizationCodeException((string) $e->getResponse());
         }
@@ -102,8 +104,7 @@ abstract class Provider implements ProviderInterface
     protected function requestUserData()
     {
         $url = $this->buildUserDataUrl();
-        $request = $this->httpClient->get($url, $this->headers['user_details']);
-        $response = $request->send();
+        $response = $this->httpClient->get($url, ['headers' => $this->headers['user_details']]);
         return $this->parseUserDataResponse((string) $response->getBody());
     }
 
