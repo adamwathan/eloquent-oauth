@@ -64,7 +64,7 @@ class GitHubProvider extends Provider
 
     public function getJson($url, $headers)
     {
-        $response = $this->httpClient->get($url, ['headers' => $headers]);
+        $response = $this->httpClient->get($url, array('headers' => $headers));
         return $response->json();
     }
 

@@ -91,10 +91,10 @@ abstract class Provider implements ProviderInterface
     {
         $url = $this->getAccessTokenBaseUrl();
         try {
-            $response = $this->httpClient->post($url, [
+            $response = $this->httpClient->post($url, array(
                 'headers' => $this->headers['access_token'],
                 'body' => $this->buildAccessTokenPostBody(),
-            ]);
+            ));
         } catch (BadResponseException $e) {
             throw new InvalidAuthorizationCodeException((string) $e->getResponse());
         }
@@ -104,7 +104,7 @@ abstract class Provider implements ProviderInterface
     protected function requestUserData()
     {
         $url = $this->buildUserDataUrl();
-        $response = $this->httpClient->get($url, ['headers' => $this->headers['user_details']]);
+        $response = $this->httpClient->get($url, array('headers' => $this->headers['user_details']));
         return $this->parseUserDataResponse((string) $response->getBody());
     }
 
