@@ -27,6 +27,10 @@ Route::get('facebook/login', function() {
 });
 ```
 
+## Video Walkthrough
+
+[![Screenshot](https://cloud.githubusercontent.com/assets/4323180/6274884/ac824c48-b848-11e4-8e4d-531e15f76bc0.png)](https://vimeo.com/120085196)
+
 ## Installation
 
 Add this package to `composer.json` to install via Packagist:
