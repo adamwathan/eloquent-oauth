@@ -33,5 +33,11 @@ return [
 			'redirect' => 'https://example.com/your/instagram/redirect',
 			'scope' => [],
 		],
+		'soundcloud' => [
+			'id' => '12345678',
+			'secret' => 'y0ur53cr374ppk3y',
+			'redirect' => 'https://example.com/your/soundcloud/redirect',
+			'scope' => [],
+		],
 	],
 ];
