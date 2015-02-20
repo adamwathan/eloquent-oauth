@@ -5,6 +5,10 @@
 
 Eloquent OAuth is a package for Laravel 5 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your client IDs and secrets in a config file, run a migration and after that it's just two method calls and you have OAuth integration.
 
+#### Video Walkthrough
+
+[![Screenshot](https://cloud.githubusercontent.com/assets/4323180/6274884/ac824c48-b848-11e4-8e4d-531e15f76bc0.png)](https://vimeo.com/120085196)
+
 #### Basic example
 
 ```php
@@ -27,9 +31,16 @@ Route::get('facebook/login', function() {
 });
 ```
 
-## Video Walkthrough
+#### Supported Providers
 
-[![Screenshot](https://cloud.githubusercontent.com/assets/4323180/6274884/ac824c48-b848-11e4-8e4d-531e15f76bc0.png)](https://vimeo.com/120085196)
+- Facebook
+- GitHub
+- Google
+- LinkedIn
+- Instagram
+- SoundCloud
+
+>Feel free to open an issue if you would like support for a particular provider, or even better, submit a pull request.
 
 ## Installation
 
@@ -168,14 +179,3 @@ OAuth::login('facebook', function($user, $details) {
 
 > Note: The Instagram API does not allow you to retrieve the user's email address, so unfortunately that field will always be `null` for the Instagram provider.
 
-## Supported Providers
-
-- Facebook
-- GitHub
-- Google
-- LinkedIn
-- Instagram
-
->The package is still in it's early infancy obviously. Support will be added for other providers as time goes on.
-
->Feel free to open an issue if you would like support for a particular provider, or even better, submit a pull request.
