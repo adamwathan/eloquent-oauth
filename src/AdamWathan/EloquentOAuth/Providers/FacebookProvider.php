@@ -28,11 +28,12 @@ class FacebookProvider extends Provider
 
     protected function parseTokenResponse($response)
     {
-        parse_str($response);
-        if (! isset($access_token)) {
+        $params = [];
+        parse_str($response, $params);
+        if (! isset($params['access_token'])) {
             throw new InvalidAuthorizationCodeException;
         }
-        return $access_token;
+        return $params['access_token'];
     }
 
     protected function parseUserDataResponse($response)
