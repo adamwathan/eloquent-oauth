@@ -44,11 +44,17 @@ Route::get('facebook/login', function() {
 
 ## Installation
 
-Add this package to `composer.json` to install via Packagist:
+#### Add this package using Composer
+
+From the command line inside your project directory, simply type:
+
+`composer require adamwathan/eloquent-oauth dev-laravel-5`
+
+(Or you can manually edit `composer.json` by adding the following line under the `"require"` section:
 
 `"adamwathan/eloquent-oauth": "dev-laravel-5"`
 
-...then run `composer update` to download the package to your vendor directory.
+...then run `composer update` to download the package to your vendor directory.)
 
 #### Update your config
 
