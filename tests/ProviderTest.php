@@ -48,6 +48,32 @@ class ProviderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @see https://github.com/adamwathan/eloquent-oauth/issues/34
+     */
+    public function test_extra_config_params_as_array()
+    {
+        $redirectUri = 'http://myapp.dev/provider/login';
+        $config = array(
+            'id' => '1',
+            'secret' => 'foobar',
+            'redirect' => $redirectUri,
+            'extra_params' => array(
+                'hd' => 'example.com',
+                'login_hint' => 'jsmith@example.com'
+            ),
+        );
+        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
+        $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
+
+        $provider = new Provider($config, $httpClient, $input);
+
+        $state = 'baz';
+        $expected = 'http://example.com/authorize?client_id=1&scope=email&redirect_uri=http://myapp.dev/provider/login&response_type=code&state='.$state.'&hd=example.com&login_hint=jsmith@example.com';
+        $result = $provider->authorizeUrl($state);
+        $this->assertEquals($expected, $result);
+    }
+
     public function test_can_get_user_details()
     {
         $redirectUri = 'http://myapp.dev/provider/login';
