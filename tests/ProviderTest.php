@@ -14,11 +14,11 @@ class ProviderTest extends PHPUnit_Framework_TestCase
     public function test_can_get_authorize_url()
     {
         $redirectUri = 'http://myapp.dev/provider/login';
-        $config = array(
+        $config = [
             'id' => '1',
             'secret' => 'foobar',
             'redirect' => $redirectUri,
-            );
+        ];
         $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
@@ -30,14 +30,40 @@ class ProviderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function test_can_get_user_details()
+    /**
+     * @see https://github.com/adamwathan/eloquent-oauth/issues/34
+     */
+    public function test_extra_config_params_as_array()
     {
         $redirectUri = 'http://myapp.dev/provider/login';
-        $config = array(
+        $config = [
             'id' => '1',
             'secret' => 'foobar',
             'redirect' => $redirectUri,
-            );
+            'extra_params' => [
+                'hd' => 'example.com',
+                'login_hint' => 'jsmith@example.com'
+            ],
+        ];
+        $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
+        $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
+
+        $provider = new Provider($config, $httpClient, $input);
+
+        $state = 'baz';
+        $expected = 'http://example.com/authorize?client_id=1&scope=email&redirect_uri=http://myapp.dev/provider/login&response_type=code&state='.$state.'&hd=example.com&login_hint=jsmith@example.com';
+        $result = $provider->authorizeUrl($state);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function test_can_get_user_details()
+    {
+        $redirectUri = 'http://myapp.dev/provider/login';
+        $config = [
+            'id' => '1',
+            'secret' => 'foobar',
+            'redirect' => $redirectUri,
+        ];
         $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
@@ -64,11 +90,11 @@ class ProviderTest extends PHPUnit_Framework_TestCase
     public function test_get_user_details_throws_exception_if_user_rejects_application()
     {
         $redirectUri = 'http://myapp.dev/provider/login';
-        $config = array(
+        $config = [
             'id' => '1',
             'secret' => 'foobar',
             'redirect' => $redirectUri,
-            );
+        ];
         $httpClient = M::mock('GuzzleHttp\\Client')->shouldIgnoreMissing();
         $input = M::mock('Illuminate\\Http\\Request')->shouldIgnoreMissing();
 
@@ -84,9 +110,9 @@ class ProviderTest extends PHPUnit_Framework_TestCase
 
 class Provider extends AbstractProvider
 {
-    protected $scope = array(
+    protected $scope = [
         'email',
-        );
+    ];
     protected function getAuthorizeUrl()
     {
         return 'http://example.com/authorize';
