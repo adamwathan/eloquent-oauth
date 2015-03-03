@@ -15,6 +15,7 @@ abstract class Provider implements ProviderInterface
     protected $clientSecret;
     protected $redirectUri;
     protected $scope = [];
+    protected $extraParams = [];
 
     protected $headers = [
         'authorize' => [],
@@ -34,6 +35,9 @@ abstract class Provider implements ProviderInterface
         $this->redirectUri = $config['redirect'];
         if (isset($config['scope'])) {
             $this->scope = array_merge($this->scope, $config['scope']);
+        }
+        if (isset($config['extra_params'])) {
+            $this->extraParams = $config['extra_params'];
         }
     }
 
@@ -56,6 +60,11 @@ abstract class Provider implements ProviderInterface
         $queryString .= "&redirect_uri=".$this->redirectUri();
         $queryString .= "&response_type=code";
         $queryString .= "&state=".$state;
+        if ($this->extraParams) {
+            foreach ($this->extraParams as $extraKey => $extraValue) {
+                $queryString .= "&".$extraKey."=".$extraValue;
+            }
+        }
         return $queryString;
     }
 
