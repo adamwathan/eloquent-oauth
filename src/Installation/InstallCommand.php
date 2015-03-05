@@ -7,15 +7,13 @@ use Symfony\Component\Console\Input\InputOption;
 class InstallCommand extends Command
 {
     protected $filesystem;
-    protected $migrationPublisher;
     protected $name = 'eloquent-oauth:install';
     protected $description = 'Install package config and migrations';
 
-    public function __construct(Filesystem $filesystem, MigrationPublisher $migrationPublisher)
+    public function __construct(Filesystem $filesystem)
     {
         parent::__construct();
         $this->filesystem = $filesystem;
-        $this->migrationPublisher = $migrationPublisher;
     }
 
     public function handle()
@@ -37,15 +35,20 @@ class InstallCommand extends Command
 
     public function publishMigrations()
     {
-        $from = __DIR__ . '/../../migrations';
-        $to = base_path() . '/database/migrations';
-        $this->migrationPublisher->publish($from, $to);
-        $this->info('Migrations published.');
+
+        $name = 'create_oauth_identities_table';
+
+        $path = $this->laravel['path'] . '/database/migrations';
+
+        $fullPath = $this->laravel['migration.creator']->create($name, $path);
+
+        $this->filesystem->put($fullPath, $this->files->get(__DIR__ . '/stubs/create_oauth_identities_table.stub'));
+
     }
 
     public function publishFile($from, $to)
     {
-        if ($this->filesystem->exists($to) && ! $this->option('force')) {
+        if ($this->filesystem->exists($to) && !$this->option('force')) {
             throw new FileExistsException;
         }
 
