@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Composer;
 use Symfony\Component\Console\Input\InputOption;
 
 class InstallCommand extends Command
@@ -11,17 +12,19 @@ class InstallCommand extends Command
     protected $name = 'eloquent-oauth:install';
     protected $description = 'Install package config and migrations';
 
-    public function __construct(Filesystem $filesystem, MigrationPublisher $migrationPublisher)
+    public function __construct(Filesystem $filesystem, MigrationPublisher $migrationPublisher, Composer $composer)
     {
         parent::__construct();
         $this->filesystem = $filesystem;
         $this->migrationPublisher = $migrationPublisher;
+        $this->composer = $composer;
     }
 
     public function handle()
     {
         $this->publishConfig();
         $this->publishMigrations();
+        $this->composer->dumpAutoloads();
         $this->comment('Package configuration and migrations installed!');
     }
 
