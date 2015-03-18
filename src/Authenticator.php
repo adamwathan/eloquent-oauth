@@ -52,13 +52,13 @@ class Authenticator
     protected function storeAccessToken($user, $provider, ProviderUserDetails $details)
     {
         if ($this->identities->userExists($provider, $details)) {
-            $this->updateAccessToken($user, $provider, $details);
+            $this->updateAccessToken($provider, $details);
         } else {
             $this->addAccessToken($user, $provider, $details);
         }
     }
 
-    protected function updateAccessToken($user, $provider, ProviderUserDetails $details)
+    protected function updateAccessToken($provider, ProviderUserDetails $details)
     {
         $identity = $this->identities->getByProvider($provider, $details);
         $identity->access_token = $details->accessToken;
