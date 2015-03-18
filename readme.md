@@ -185,3 +185,34 @@ OAuth::login('facebook', function($user, $details) {
 
 > Note: The Instagram API does not allow you to retrieve the user's email address, so unfortunately that field will always be `null` for the Instagram provider.
 
+### Advanced: Storing additional data
+
+Remember: One of the goals of the Eloquent OAuth package is to normalize the data received across all supported providers, so that you can count on those specific data items (explained above) being available in the `$details` object.
+
+But, each provider offers its own sets of additional data. If you need to access or store additional data beyond the basics of what Eloquent OAuth's default `ProviderUserDetails` object supplies, you need to do two things:
+
+1. Request it from the provider, by extending its scope:
+
+   Say for example we want to collect the user's gender when they login using Facebook.
+   
+   In the `config/eloquent-oauth.php` file, set the `[scope]` in the `facebook` provider section to include the `public_profile` scope, like this:
+   
+   ```php
+      'scope' => ['email', 'public_profile'],
+   ```
+   
+ > For available scopes with each provider, consult that provider's API documentation.
+
+ > NOTE: By increasing the scope you will be asking the user to grant access to additional information. They will be informed of the scopes you're requesting. If you ask for too much unnecessary data, they may refuse. So exercise restraint when requesting additional scopes.
+
+2. Now where you do your `OAuth::login`, store the to your `$user` object by accessing the `$details->raw()['KEY']` data:
+
+ ```php
+        OAuth::login('facebook', function($user, $details) (
+            $user->gender = $details->raw()['gender']; // Or whatever the key is
+            $user->save();
+        });
+ ```
+ 
+ > TIP: You can see what the available keys are by testing with `dd($details->raw());` inside that same closure.
+
