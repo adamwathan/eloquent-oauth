@@ -40,7 +40,7 @@ class Authenticator
     protected function updateUser($user, $provider, $details)
     {
         $this->users->store($user);
-        $this->storeAccessToken($user, $provider, $details);
+        $this->storeProviderIdentity($user, $provider, $details);
     }
 
     protected function getExistingUser($provider, $details)
@@ -49,23 +49,23 @@ class Authenticator
         return $this->users->findByIdentity($identity);
     }
 
-    protected function storeAccessToken($user, $provider, ProviderUserDetails $details)
+    protected function storeProviderIdentity($user, $provider, ProviderUserDetails $details)
     {
         if ($this->identities->userExists($provider, $details)) {
-            $this->updateAccessToken($provider, $details);
+            $this->updateProviderIdentity($provider, $details);
         } else {
-            $this->addAccessToken($user, $provider, $details);
+            $this->addProviderIdentity($user, $provider, $details);
         }
     }
 
-    protected function updateAccessToken($provider, ProviderUserDetails $details)
+    protected function updateProviderIdentity($provider, ProviderUserDetails $details)
     {
         $identity = $this->identities->getByProvider($provider, $details);
         $identity->access_token = $details->accessToken;
         $this->identities->store($identity);
     }
 
-    protected function addAccessToken($user, $provider, ProviderUserDetails $details)
+    protected function addProviderIdentity($user, $provider, ProviderUserDetails $details)
     {
         $identity = new OAuthIdentity;
         $identity->user_id = $user->getKey();
