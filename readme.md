@@ -97,7 +97,7 @@ OAuth::login('facebook', function($user, $details) {
 
 Require this package in your `composer.json` file to install via Packagist:
 
-`"adamwathan/eloquent-oauth": "dev-master"`
+`"adamwathan/eloquent-oauth": "~4.0"`
 
 ...then run `composer update` to download the package to your vendor directory.
 
