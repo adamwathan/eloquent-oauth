@@ -40,10 +40,9 @@ class InstallCommand extends Command
     public function publishMigrations()
     {
         $name = 'create_oauth_identities_table';
-        $path = $this->laravel['path'] . '/database/migrations';
+        $path = $this->laravel['path.database'] . '/migrations';
         $fullPath = $this->laravel['migration.creator']->create($name, $path);
-
-        $this->filesystem->put($fullPath, $this->files->get(__DIR__ . '/stubs/create_oauth_identities_table.stub'));
+        $this->filesystem->put($fullPath, $this->filesystem->get(__DIR__ . '/../../migrations/create_oauth_identities_table.stub'));
     }
 
     public function publishFile($from, $to)
