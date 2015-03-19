@@ -21,20 +21,21 @@ class InstallCommand extends Command
 
     public function handle()
     {
-        $this->publishConfig();
-        $this->publishMigrations();
+        try {
+            $this->publishConfig();
+            $this->publishMigrations();
+        } catch (FileExistsException $e) {
+            $this->error('It looks like this package has already been installed. Use --force to override.');
+        }
+
         $this->composer->dumpAutoloads();
         $this->comment('Package configuration and migrations installed!');
     }
 
     public function publishConfig()
     {
-        try {
-            $this->publishFile(__DIR__ . '/../../config/eloquent-oauth.php', config_path() . '/eloquent-oauth.php');
-            $this->info('Configuration published.');
-        } catch (FileExistsException $e) {
-            $this->error('Package configuration already exists. Use --force to override.');
-        }
+        $this->publishFile(__DIR__ . '/../../config/eloquent-oauth.php', config_path() . '/eloquent-oauth.php');
+        $this->info('Configuration published.');
     }
 
     public function publishMigrations()
