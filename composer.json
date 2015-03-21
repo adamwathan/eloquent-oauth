@@ -14,7 +14,13 @@
         "illuminate/session": "5.0.*",
         "illuminate/database": "5.0.*",
         "illuminate/support": "5.0.*",
-        "guzzlehttp/guzzle": "~5.0"
+        "socialnorm/socialnorm": "dev-master",
+        "socialnorm/facebook": "dev-master",
+        "socialnorm/github": "dev-master",
+        "socialnorm/linkedin": "dev-master",
+        "socialnorm/google": "dev-master",
+        "socialnorm/instagram": "dev-master",
+        "socialnorm/soundcloud": "dev-master"
     },
     "require-dev": {
         "mockery/mockery": "~0.8"
@@ -26,5 +32,35 @@
         "classmap": [
             "tests/FunctionalTestCase.php"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm-facebook"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm-github"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm-linkedin"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm-google"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm-instagram"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/adamwathan/socialnorm-soundcloud"
+        }
+    ]
 }
