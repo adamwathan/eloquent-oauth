@@ -10,12 +10,12 @@ use SocialNorm\StateGenerator;
 class EloquentOAuthServiceProvider extends ServiceProvider {
 
     protected $providerLookup = [
-        'facebook' => 'SocialNorm\\Facebook\\FacebookProvider',
-        'github' => 'SocialNorm\\GitHub\\GitHubProvider',
-        'google' => 'SocialNorm\\Google\\GoogleProvider',
-        'linkedin' => 'SocialNorm\\LinkedIn\\LinkedInProvider',
-        'instagram' => 'SocialNorm\\Instagram\\InstagramProvider',
-        'soundcloud' => 'SocialNorm\\SoundCloud\\SoundCloudProvider',
+        'facebook' => 'SocialNorm\Facebook\FacebookProvider',
+        'github' => 'SocialNorm\GitHub\GitHubProvider',
+        'google' => 'SocialNorm\Google\GoogleProvider',
+        'linkedin' => 'SocialNorm\LinkedIn\LinkedInProvider',
+        'instagram' => 'SocialNorm\Instagram\InstagramProvider',
+        'soundcloud' => 'SocialNorm\SoundCloud\SoundCloudProvider',
     ];
 
     /**
