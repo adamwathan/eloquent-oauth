@@ -1,10 +1,11 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
 use Closure;
-use Illuminate\Auth\AuthManager as Auth;
+use Illuminate\Contracts\Auth\Guard as Auth;
 use AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException;
 use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
+use SocialNorm\User as UserDetails;
 
 class Authenticator
 {
@@ -19,7 +20,7 @@ class Authenticator
         $this->identities = $identities;
     }
 
-    public function login($providerAlias, $userDetails, Closure $callback = null)
+    public function login($providerAlias, UserDetails $userDetails, Closure $callback = null)
     {
         $user = $this->getUser($providerAlias, $userDetails);
         if ($callback) {
@@ -29,7 +30,7 @@ class Authenticator
         $this->auth->login($user);
     }
 
-    protected function getUser($provider, $details)
+    protected function getUser($provider, UserDetails $details)
     {
         if ($this->identities->userExists($provider, $details)) {
             return $this->getExistingUser($provider, $details);
@@ -37,19 +38,19 @@ class Authenticator
         return $this->users->create();
     }
 
-    protected function updateUser($user, $provider, $details)
+    protected function updateUser($user, $provider, UserDetails $details)
     {
         $this->users->store($user);
         $this->storeProviderIdentity($user, $provider, $details);
     }
 
-    protected function getExistingUser($provider, $details)
+    protected function getExistingUser($provider, UserDetails $details)
     {
         $identity = $this->identities->getByProvider($provider, $details);
         return $this->users->findByIdentity($identity);
     }
 
-    protected function storeProviderIdentity($user, $provider, ProviderUserDetails $details)
+    protected function storeProviderIdentity($user, $provider, UserDetails $details)
     {
         if ($this->identities->userExists($provider, $details)) {
             $this->updateProviderIdentity($provider, $details);
@@ -58,20 +59,20 @@ class Authenticator
         }
     }
 
-    protected function updateProviderIdentity($provider, ProviderUserDetails $details)
+    protected function updateProviderIdentity($provider, UserDetails $details)
     {
         $identity = $this->identities->getByProvider($provider, $details);
-        $identity->access_token = $details->accessToken;
+        $identity->access_token = $details->access_token;
         $this->identities->store($identity);
     }
 
-    protected function addProviderIdentity($user, $provider, ProviderUserDetails $details)
+    protected function addProviderIdentity($user, $provider, UserDetails $details)
     {
         $identity = new OAuthIdentity;
         $identity->user_id = $user->getKey();
         $identity->provider = $provider;
-        $identity->provider_user_id = $details->userId;
-        $identity->access_token = $details->accessToken;
+        $identity->provider_user_id = $details->id;
+        $identity->access_token = $details->access_token;
         $this->identities->store($identity);
     }
 }

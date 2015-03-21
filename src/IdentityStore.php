@@ -1,11 +1,13 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
+use SocialNorm\User as UserDetails;
+
 class IdentityStore
 {
-    public function getByProvider($provider, $providerUserDetails)
+    public function getByProvider($provider, UserDetails $providerUserDetails)
     {
         return OAuthIdentity::where('provider', $provider)
-            ->where('provider_user_id', $providerUserDetails->userId)
+            ->where('provider_user_id', $providerUserDetails->id)
             ->first();
     }
 
@@ -21,7 +23,7 @@ class IdentityStore
         $identity->save();
     }
 
-    public function userExists($provider, ProviderUserDetails $details)
+    public function userExists($provider, UserDetails $details)
     {
         return (bool) $this->getByProvider($provider, $details);
     }
