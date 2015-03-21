@@ -32,11 +32,7 @@ class OAuthManager
 
     public function login($providerAlias, Closure $callback = null)
     {
-        try {
-            $details = $this->socialnorm->getUser($providerAlias);
-            return $this->authenticator->login($providerAlias, $details, $callback);
-        } catch (SocialNormInvalidCode $e) {
-            throw new InvalidAuthorizationCodeException;
-        }
+        $details = $this->socialnorm->getUser($providerAlias);
+        return $this->authenticator->login($providerAlias, $details, $callback);
     }
 }
