@@ -13,13 +13,13 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
 
     public function test_login_creates_new_user_if_no_matching_user_exists()
     {
-        $auth = M::mock('Illuminate\\Auth\\AuthManager');
-        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserStore');
-        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
+        $auth = M::mock('Illuminate\Contracts\Auth\Guard');
+        $users  = M::mock('AdamWathan\EloquentOAuth\UserStore');
+        $identities  = M::mock('AdamWathan\EloquentOAuth\IdentityStore')->shouldIgnoreMissing();
 
-        $userDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
+        $userDetails = M::mock('SocialNorm\User');
 
-        $user = M::mock('stdClass')->shouldIgnoreMissing();
+        $user = M::mock('Illuminate\Contracts\Auth\Authenticatable')->shouldIgnoreMissing();
 
         $authenticator = new Authenticator($auth, $users, $identities);
 
@@ -32,14 +32,14 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
 
     public function test_login_uses_existing_user_if_matching_user_exists()
     {
-        $auth = M::mock('Illuminate\\Auth\\AuthManager');
-        $users  = M::mock('AdamWathan\\EloquentOAuth\\UserStore')->shouldIgnoreMissing();
-        $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
+        $auth = M::mock('Illuminate\Contracts\Auth\Guard');
+        $users  = M::mock('AdamWathan\EloquentOAuth\UserStore')->shouldIgnoreMissing();
+        $identities  = M::mock('AdamWathan\EloquentOAuth\IdentityStore')->shouldIgnoreMissing();
 
-        $userDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
+        $userDetails = M::mock('SocialNorm\User');
         $identity = new OAuthIdentity;
 
-        $user = M::mock('stdClass')->shouldIgnoreMissing();
+        $user = M::mock('Illuminate\Contracts\Auth\Authenticatable')->shouldIgnoreMissing();
 
         $authenticator = new Authenticator($auth, $users, $identities);
 
