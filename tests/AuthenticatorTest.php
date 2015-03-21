@@ -2,6 +2,7 @@
 
 use Mockery as M;
 use AdamWathan\EloquentOAuth\Authenticator;
+use AdamWathan\EloquentOAuth\OAuthIdentity;
 
 class AuthenticatorTest extends PHPUnit_Framework_TestCase
 {
@@ -36,7 +37,7 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
         $identities  = M::mock('AdamWathan\\EloquentOAuth\\IdentityStore')->shouldIgnoreMissing();
 
         $userDetails = M::mock('AdamWathan\\EloquentOAuth\\ProviderUserDetails');
-        $identity = M::mock('AdamWathan\\EloquentOAuth\\OAuthIdentity');
+        $identity = new OAuthIdentity;
 
         $user = M::mock('stdClass')->shouldIgnoreMissing();
 
