@@ -1,11 +1,8 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
 use Closure;
-use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 use Illuminate\Routing\Redirector;
 use SocialNorm\SocialNorm;
-use SocialNorm\Exceptions\InvalidAuthorizationCodeException as SocialNormInvalidCode;
-use SocialNorm\Provider;
 
 class OAuthManager
 {
