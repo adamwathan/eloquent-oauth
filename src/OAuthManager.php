@@ -20,11 +20,6 @@ class OAuthManager
         $this->socialnorm = $socialnorm;
     }
 
-    public function registerProvider($alias, Provider $provider)
-    {
-        $this->socialnorm->registerProvider($alias, $provider);
-    }
-
     public function authorize($providerAlias)
     {
         return $this->redirect->to($this->socialnorm->authorize($providerAlias));
