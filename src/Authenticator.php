@@ -1,23 +1,19 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-use Closure;
-use Illuminate\Contracts\Auth\Guard as Auth;
-use SocialNorm\User as UserDetails;
-
 class Authenticator
 {
     protected $auth;
     protected $users;
     protected $identities;
 
-    public function __construct(Auth $auth, UserStore $users, IdentityStore $identities)
+    public function __construct($auth, $users, $identities)
     {
         $this->auth = $auth;
         $this->users = $users;
         $this->identities = $identities;
     }
 
-    public function login($providerAlias, UserDetails $userDetails, Closure $callback = null)
+    public function login($providerAlias, $userDetails, $callback = null)
     {
         $user = $this->getUser($providerAlias, $userDetails);
         if ($callback) {
@@ -27,7 +23,7 @@ class Authenticator
         $this->auth->login($user);
     }
 
-    protected function getUser($providerAlias, UserDetails $details)
+    protected function getUser($providerAlias, $details)
     {
         if ($this->identities->userExists($providerAlias, $details)) {
             return $this->getExistingUser($providerAlias, $details);
@@ -35,19 +31,19 @@ class Authenticator
         return $this->users->create();
     }
 
-    protected function updateUser($user, $providerAlias, UserDetails $details)
+    protected function updateUser($user, $providerAlias, $details)
     {
         $this->users->store($user);
         $this->storeProviderIdentity($user, $providerAlias, $details);
     }
 
-    protected function getExistingUser($providerAlias, UserDetails $details)
+    protected function getExistingUser($providerAlias, $details)
     {
         $identity = $this->identities->getByProvider($providerAlias, $details);
         return $this->users->findByIdentity($identity);
     }
 
-    protected function storeProviderIdentity($user, $providerAlias, UserDetails $details)
+    protected function storeProviderIdentity($user, $providerAlias, $details)
     {
         if ($this->identities->userExists($providerAlias, $details)) {
             $this->updateProviderIdentity($providerAlias, $details);
@@ -56,14 +52,14 @@ class Authenticator
         }
     }
 
-    protected function updateProviderIdentity($providerAlias, UserDetails $details)
+    protected function updateProviderIdentity($providerAlias, $details)
     {
         $identity = $this->identities->getByProvider($providerAlias, $details);
         $identity->access_token = $details->access_token;
         $this->identities->store($identity);
     }
 
-    protected function addProviderIdentity($user, $providerAlias, UserDetails $details)
+    protected function addProviderIdentity($user, $providerAlias, $details)
     {
         $identity = new OAuthIdentity;
         $identity->user_id = $user->getKey();
