@@ -14,6 +14,7 @@
         "illuminate/session": "5.0.*",
         "illuminate/database": "5.0.*",
         "illuminate/http": "5.0.*",
+        "illuminate/routing": "5.0.*",
         "illuminate/support": "5.0.*",
         "socialnorm/socialnorm": "0.1.*",
         "socialnorm/facebook": "0.1.*",
@@ -24,7 +25,7 @@
         "socialnorm/soundcloud": "0.1.*"
     },
     "require-dev": {
-        "mockery/mockery": "~0.8"
+        "mockery/mockery": "~0.9"
     },
     "autoload": {
         "psr-4": {
