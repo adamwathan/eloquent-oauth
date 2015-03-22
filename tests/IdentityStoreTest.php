@@ -14,7 +14,7 @@ class IdentityStoreTest extends FunctionalTestCase
         Eloquent::unguard();
     }
 
-    public function test_getByProvider()
+    public function test_get_by_provider()
     {
         OAuthIdentity::create(array(
             'user_id' => 1,
@@ -44,7 +44,7 @@ class IdentityStoreTest extends FunctionalTestCase
         $this->assertEquals('def456', $identity->access_token);
     }
 
-    public function test_getByProvider_when_no_match()
+    public function test_get_by_provider_when_no_match()
     {
         OAuthIdentity::create(array(
             'user_id' => 1,
