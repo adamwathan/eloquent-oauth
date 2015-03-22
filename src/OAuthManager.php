@@ -1,16 +1,12 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-use Closure;
-use Illuminate\Routing\Redirector;
-use SocialNorm\SocialNorm;
-
 class OAuthManager
 {
     protected $redirect;
     protected $authenticator;
     protected $socialnorm;
 
-    public function __construct(Redirector $redirect, Authenticator $authenticator, SocialNorm $socialnorm)
+    public function __construct($redirect, $authenticator, $socialnorm)
     {
         $this->redirect = $redirect;
         $this->authenticator = $authenticator;
@@ -22,7 +18,7 @@ class OAuthManager
         return $this->redirect->to($this->socialnorm->authorize($providerAlias));
     }
 
-    public function login($providerAlias, Closure $callback = null)
+    public function login($providerAlias, $callback = null)
     {
         $details = $this->socialnorm->getUser($providerAlias);
         return $this->authenticator->login($providerAlias, $details, $callback);
