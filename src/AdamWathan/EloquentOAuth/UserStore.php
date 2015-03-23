@@ -22,6 +22,6 @@ class UserStore
 
     public function findByIdentity($identity)
     {
-        return $identity->belongsTo($this->model, 'user_id')->first();
+        return $identity->belongsTo($this->model, 'user_id')->firstOrFail();
     }
 }
