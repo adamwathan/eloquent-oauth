@@ -24,4 +24,14 @@ class UserStore
     {
         return $identity->belongsTo($this->model, 'user_id')->firstOrFail();
     }
+
+    public function userExists($details) {
+        return (bool) $this->getExistingUser($details);
+    }
+
+    public function getExistingUser($details) {
+        $user_model = $this->model;
+        $user = $user_model::where('email', '=', $details->email)->first();
+        return $user;
+    }
 }
