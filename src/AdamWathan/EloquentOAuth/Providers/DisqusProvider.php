@@ -54,28 +54,33 @@ class DisqusProvider extends Provider
         return $this->providerUserData['response']['id'];
     }
 
-    protected function nickname()
+    protected function nickName()
     {
-        return $this->getProviderUserData('email');
+        return $this->providerUserData['response']['username'];
     }
 
     protected function firstName()
     {
-        return $this->getProviderUserData('username');
+        return $this->providerUserData['response']['name'];
     }
 
     protected function lastName()
     {
-        return $this->getProviderUserData('family_name');
+        return $this->providerUserData['response']['name'];
+    }
+
+    protected function profileUrl()
+    {
+        return $this->providerUserData['response']['profileUrl'];
     }
 
     protected function imageUrl()
     {
-        return $this->getProviderUserData('picture');
+        return $this->providerUserData['response']['avatar']['permalink'];
     }
 
     protected function email()
     {
-        return $this->getProviderUserData('email');
+        return null;
     }
 }
