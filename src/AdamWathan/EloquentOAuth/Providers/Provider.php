@@ -120,8 +120,9 @@ abstract class Provider implements ProviderInterface
 
     protected function buildUserDataUrl()
     {
+        $delimiter = (isset($this->delimiter)) ? $this->delimiter : '?';
         $url = $this->getUserDataUrl();
-        $url .= "?access_token=".$this->accessToken;
+        $url .= $delimiter . "access_token=".$this->accessToken;
         return $url;
     }
 
