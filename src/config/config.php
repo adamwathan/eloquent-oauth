@@ -33,5 +33,11 @@ return array(
 			'redirect' => URL::to('your/instagram/redirect'),
 			'scope' => array(),
 		),
+		'disqus' => array(
+			'id' => '12345678',
+			'secret' => 'y0ur53cr374ppk3y',
+			'redirect' => URL::to('your/disqus/redirect'),
+			'scope' => array(),
+		),		
 	)
 );
