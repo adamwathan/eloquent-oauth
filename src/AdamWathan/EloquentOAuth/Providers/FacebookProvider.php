@@ -35,7 +35,7 @@ class FacebookProvider extends Provider
                     'client_id' => $this->clientId,
                     'client_secret' => $this->clientSecret,
                     'redirect_uri' => $this->redirectUri(),
-                    'code' => $this->request->authorizationCode(),
+                    'code' => $this->getAuthorizationCode(),
                 ],
             ]);
         } catch (BadResponseException $e) {
