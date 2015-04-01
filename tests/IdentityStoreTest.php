@@ -2,9 +2,9 @@
 
 use AdamWathan\EloquentOAuth\OAuthIdentity;
 use AdamWathan\EloquentOAuth\IdentityStore;
-use AdamWathan\EloquentOAuth\ProviderUserDetails;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Mockery as M;
+use SocialNorm\User as UserDetails;
 
 class IdentityStoreTest extends FunctionalTestCase
 {
@@ -14,7 +14,7 @@ class IdentityStoreTest extends FunctionalTestCase
         Eloquent::unguard();
     }
 
-    public function test_getByProvider()
+    public function test_get_by_provider()
     {
         OAuthIdentity::create(array(
             'user_id' => 1,
@@ -28,14 +28,13 @@ class IdentityStoreTest extends FunctionalTestCase
             'provider_user_id' => 'bazfoo',
             'access_token' => 'def456',
             ));
-        $details = new ProviderUserDetails(array(
-            'accessToken' => 'new-token',
-            'userId' => 'bazfoo',
+        $details = new UserDetails(array(
+            'access_token' => 'new-token',
+            'id' => 'bazfoo',
             'nickname' => 'john.doe',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
+            'full_name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+            'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
         $identities = new IdentityStore;
         $identity = $identities->getByProvider('facebook', $details);
@@ -45,7 +44,7 @@ class IdentityStoreTest extends FunctionalTestCase
         $this->assertEquals('def456', $identity->access_token);
     }
 
-    public function test_getByProvider_when_no_match()
+    public function test_get_by_provider_when_no_match()
     {
         OAuthIdentity::create(array(
             'user_id' => 1,
@@ -59,14 +58,13 @@ class IdentityStoreTest extends FunctionalTestCase
             'provider_user_id' => 'bazfoo',
             'access_token' => 'def456',
             ));
-        $details = new ProviderUserDetails(array(
-            'accessToken' => 'new-token',
-            'userId' => 'missing-id',
+        $details = new UserDetails(array(
+            'access_token' => 'new-token',
+            'id' => 'missing-id',
             'nickname' => 'john.doe',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
+            'full_name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+            'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
         $identities = new IdentityStore;
         $identity = $identities->getByProvider('facebook', $details);
@@ -123,14 +121,13 @@ class IdentityStoreTest extends FunctionalTestCase
             'provider_user_id' => 'bazfoo',
             'access_token' => 'def456',
             ));
-        $details = new ProviderUserDetails(array(
-            'accessToken' => 'new-token',
-            'userId' => 'bazfoo',
+        $details = new UserDetails(array(
+            'access_token' => 'new-token',
+            'id' => 'bazfoo',
             'nickname' => 'john.doe',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
+            'full_name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+            'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
         $identities = new IdentityStore;
         $this->assertTrue($identities->userExists('facebook', $details));
@@ -144,14 +141,13 @@ class IdentityStoreTest extends FunctionalTestCase
             'provider_user_id' => 'foobar',
             'access_token' => 'def456',
             ));
-        $details = new ProviderUserDetails(array(
-            'accessToken' => 'new-token',
-            'userId' => 'bazfoo',
+        $details = new UserDetails(array(
+            'access_token' => 'new-token',
+            'id' => 'bazfoo',
             'nickname' => 'john.doe',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
+            'full_name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'imageUrl' => 'http://example.com/photos/john_doe.jpg',
+            'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
         $identities = new IdentityStore;
         $this->assertFalse($identities->userExists('facebook', $details));

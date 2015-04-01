@@ -1,48 +1,26 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-use Closure;
-use Illuminate\Auth\AuthManager as Auth;
-use AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException;
-use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
-use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
-
 class OAuthManager
 {
-    protected $authorizer;
+    protected $redirect;
     protected $authenticator;
-    protected $stateManager;
-    protected $providers;
+    protected $socialnorm;
 
-    public function __construct(Authorizer $authorizer, Authenticator $authenticator, StateManager $stateManager, ProviderRegistrar $providers)
+    public function __construct($redirect, $authenticator, $socialnorm)
     {
-        $this->authorizer = $authorizer;
+        $this->redirect = $redirect;
         $this->authenticator = $authenticator;
-        $this->stateManager = $stateManager;
-        $this->providers = $providers;
-    }
-
-    public function registerProvider($alias, ProviderInterface $provider)
-    {
-        $this->providers->registerProvider($alias, $provider);
+        $this->socialnorm = $socialnorm;
     }
 
     public function authorize($providerAlias)
     {
-        $state = $this->stateManager->generateState();
-        return $this->authorizer->authorize($this->getProvider($providerAlias), $state);
+        return $this->redirect->to($this->socialnorm->authorize($providerAlias));
     }
 
-    public function login($providerAlias, Closure $callback = null)
+    public function login($providerAlias, $callback = null)
     {
-        if (! $this->stateManager->verifyState()) {
-            throw new InvalidAuthorizationCodeException;
-        }
-        $details = $this->getProvider($providerAlias)->getUserDetails();
+        $details = $this->socialnorm->getUser($providerAlias);
         return $this->authenticator->login($providerAlias, $details, $callback);
-    }
-
-    protected function getProvider($providerAlias)
-    {
-        return $this->providers->getProvider($providerAlias);
     }
 }

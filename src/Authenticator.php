@@ -1,25 +1,19 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-use Closure;
-use Illuminate\Auth\AuthManager as Auth;
-use AdamWathan\EloquentOAuth\Exceptions\ProviderNotRegisteredException;
-use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
-use AdamWathan\EloquentOAuth\Providers\ProviderInterface;
-
 class Authenticator
 {
     protected $auth;
     protected $users;
     protected $identities;
 
-    public function __construct(Auth $auth, UserStore $users, IdentityStore $identities)
+    public function __construct($auth, $users, $identities)
     {
         $this->auth = $auth;
         $this->users = $users;
         $this->identities = $identities;
     }
 
-    public function login($providerAlias, $userDetails, Closure $callback = null)
+    public function login($providerAlias, $userDetails, $callback = null)
     {
         $user = $this->getUser($providerAlias, $userDetails);
         if ($callback) {
@@ -29,49 +23,49 @@ class Authenticator
         $this->auth->login($user);
     }
 
-    protected function getUser($provider, $details)
+    protected function getUser($providerAlias, $details)
     {
-        if ($this->identities->userExists($provider, $details)) {
-            return $this->getExistingUser($provider, $details);
+        if ($this->identities->userExists($providerAlias, $details)) {
+            return $this->getExistingUser($providerAlias, $details);
         }
         return $this->users->create();
     }
 
-    protected function updateUser($user, $provider, $details)
+    protected function updateUser($user, $providerAlias, $details)
     {
         $this->users->store($user);
-        $this->storeProviderIdentity($user, $provider, $details);
+        $this->storeProviderIdentity($user, $providerAlias, $details);
     }
 
-    protected function getExistingUser($provider, $details)
+    protected function getExistingUser($providerAlias, $details)
     {
-        $identity = $this->identities->getByProvider($provider, $details);
+        $identity = $this->identities->getByProvider($providerAlias, $details);
         return $this->users->findByIdentity($identity);
     }
 
-    protected function storeProviderIdentity($user, $provider, ProviderUserDetails $details)
+    protected function storeProviderIdentity($user, $providerAlias, $details)
     {
-        if ($this->identities->userExists($provider, $details)) {
-            $this->updateProviderIdentity($provider, $details);
+        if ($this->identities->userExists($providerAlias, $details)) {
+            $this->updateProviderIdentity($providerAlias, $details);
         } else {
-            $this->addProviderIdentity($user, $provider, $details);
+            $this->addProviderIdentity($user, $providerAlias, $details);
         }
     }
 
-    protected function updateProviderIdentity($provider, ProviderUserDetails $details)
+    protected function updateProviderIdentity($providerAlias, $details)
     {
-        $identity = $this->identities->getByProvider($provider, $details);
-        $identity->access_token = $details->accessToken;
+        $identity = $this->identities->getByProvider($providerAlias, $details);
+        $identity->access_token = $details->access_token;
         $this->identities->store($identity);
     }
 
-    protected function addProviderIdentity($user, $provider, ProviderUserDetails $details)
+    protected function addProviderIdentity($user, $providerAlias, $details)
     {
         $identity = new OAuthIdentity;
         $identity->user_id = $user->getKey();
-        $identity->provider = $provider;
-        $identity->provider_user_id = $details->userId;
-        $identity->access_token = $details->accessToken;
+        $identity->provider = $providerAlias;
+        $identity->provider_user_id = $details->id;
+        $identity->access_token = $details->access_token;
         $this->identities->store($identity);
     }
 }
