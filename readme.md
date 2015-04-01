@@ -1,6 +1,7 @@
 # Eloquent OAuth
 
 [![Code Climate](https://codeclimate.com/github/adamwathan/eloquent-oauth/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/eloquent-oauth)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/adamwathan/eloquent-oauth/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/adamwathan/eloquent-oauth/?branch=master)
 [![Build Status](https://api.travis-ci.org/adamwathan/eloquent-oauth.svg)](https://travis-ci.org/adamwathan/eloquent-oauth)
 
 > Note: Check the [Laravel 4 branch](https://github.com/adamwathan/eloquent-oauth/tree/laravel-4) if you are using Laravel 4.
