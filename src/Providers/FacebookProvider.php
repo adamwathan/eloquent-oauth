@@ -5,8 +5,8 @@ use AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
 class FacebookProvider extends Provider
 {
     protected $authorizeUrl = "https://www.facebook.com/dialog/oauth";
-    protected $accessTokenUrl = "https://graph.facebook.com/oauth/access_token";
-    protected $userDataUrl = "https://graph.facebook.com/me";
+    protected $accessTokenUrl = "https://graph.facebook.com/v2.3/oauth/access_token";
+    protected $userDataUrl = "https://graph.facebook.com/v2.3/me";
     protected $scope = [
         'email',
     ];
@@ -26,14 +26,27 @@ class FacebookProvider extends Provider
         return $this->userDataUrl;
     }
 
+    protected function requestAccessToken()
+    {
+        $url = $this->getAccessTokenBaseUrl();
+        try {
+            $response = $this->httpClient->get($url, [
+                'query' => [
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'redirect_uri' => $this->redirectUri(),
+                    'code' => $this->getAuthorizationCode(),
+                ],
+            ]);
+        } catch (BadResponseException $e) {
+            throw new InvalidAuthorizationCodeException((string) $e->getResponse());
+        }
+        return $this->parseTokenResponse((string) $response->getBody());
+    }
+
     protected function parseTokenResponse($response)
     {
-        $params = [];
-        parse_str($response, $params);
-        if (! isset($params['access_token'])) {
-            throw new InvalidAuthorizationCodeException;
-        }
-        return $params['access_token'];
+        return $this->parseJsonTokenResponse($response);
     }
 
     protected function parseUserDataResponse($response)
@@ -48,7 +61,7 @@ class FacebookProvider extends Provider
 
     protected function nickname()
     {
-        return $this->getProviderUserData('username');
+        return $this->getProviderUserData('name');
     }
 
     protected function firstName()
@@ -63,7 +76,7 @@ class FacebookProvider extends Provider
 
     protected function imageUrl()
     {
-        return 'https://graph.facebook.com/'.$this->userId().'/picture';
+        return 'https://graph.facebook.com/v2.3/'.$this->userId().'/picture';
     }
 
     protected function email()
