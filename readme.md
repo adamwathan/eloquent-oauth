@@ -41,6 +41,7 @@ Route::get('facebook/login', function() {
 - LinkedIn
 - Instagram
 - SoundCloud
+- Strava
 
 >Feel free to open an issue if you would like support for a particular provider, or even better, submit a pull request.
 
