@@ -15,6 +15,16 @@ class UserStore
         return $user;
     }
 
+    public function userExists($details) {
+        return (bool) $this->getExistingUser($details);
+    }
+
+    public function getExistingUser($details) {
+        $user_model = $this->model;
+        $user = $user_model::where('email', '=', $details->email)->first();
+        return $user;
+    }   
+
     public function store($user)
     {
         return $user->save();
