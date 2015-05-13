@@ -4,9 +4,11 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/adamwathan/eloquent-oauth/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/adamwathan/eloquent-oauth/?branch=master)
 [![Build Status](https://api.travis-ci.org/adamwathan/eloquent-oauth.svg)](https://travis-ci.org/adamwathan/eloquent-oauth)
 
-> Note: Check the [Laravel 4 branch](https://github.com/adamwathan/eloquent-oauth/tree/laravel-4) if you are using Laravel 4.
+> Note: Use the [Laravel 4 wrapper](https://github.com/adamwathan/eloquent-oauth-l4) for easy integration with Laravel 4.
 
-Eloquent OAuth is a package for Laravel 5 designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your client IDs and secrets in a config file, run a migration and after that it's just two method calls and you have OAuth integration.
+> Note: Use the [Laravel 5 wrapper](https://github.com/adamwathan/eloquent-oauth-l4) for easy integration with Laravel 5.
+
+Eloquent OAuth is a package for Laravel designed to make authentication against various OAuth providers *ridiculously* brain-dead simple. Specify your client IDs and secrets in a config file, run a migration and after that it's just two method calls and you have OAuth integration.
 
 #### Video Walkthrough
 
