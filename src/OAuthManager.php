@@ -23,4 +23,9 @@ class OAuthManager
         $details = $this->socialnorm->getUser($providerAlias);
         return $this->authenticator->login($providerAlias, $details, $callback);
     }
+
+    public function registerProvider($alias, $provider)
+    {
+        $this->socialnorm->registerProvider($alias, $provider);
+    }
 }
