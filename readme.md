@@ -84,8 +84,8 @@ Once the `login` method succeeds, the user will be authenticated and available v
 had logged in through your application normally.
 
 ```php
-use \AdamWathan\EloquentOAuth\Exceptions\ApplicationRejectedException;
-use \AdamWathan\EloquentOAuth\Exceptions\InvalidAuthorizationCodeException;
+use SocialNorm\Exceptions\ApplicationRejectedException;
+use SocialNorm\Exceptions\InvalidAuthorizationCodeException;
 
 Route::get('facebook/login', function() {
     try {
@@ -105,27 +105,26 @@ Route::get('facebook/login', function() {
 ```
 
 If you need to do anything with the newly created user, you can pass an optional closure as the second
-argument to the `login` method. This closure will receive the `$user` instance and a `ProviderUserDetails`
+argument to the `login` method. This closure will receive the `$user` instance and a `SocialNorm\User`
 object that contains basic information from the OAuth provider, including:
 
-- User ID
-- Nickname
-- First Name
-- Last Name
-- Email
-- Image URL
-- Access Token
+- `id`
+- `nickname`
+- `full_name`
+- `avatar`
+- `email`
+- `access_token`
 
 ```php
 OAuth::login('facebook', function($user, $details) {
     $user->nickname = $details->nickname;
-    $user->name = $details->firstName . ' ' . $details->lastName;
-    $user->profile_image = $details->imageUrl;
+    $user->name = $details->full_name;
+    $user->profile_image = $details->avatar;
     $user->save();
 });
 ```
 
-> Note: The Instagram API does not allow you to retrieve the user's email address, so unfortunately that field will always be `null` for the Instagram provider.
+> Note: The Instagram and Soundcloud APIs do not allow you to retrieve the user's email address, so unfortunately that field will always be `null` for those provider.
 
 ### Advanced: Storing additional data
 
