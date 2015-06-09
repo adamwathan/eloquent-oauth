@@ -48,72 +48,10 @@ Route::get('facebook/login', function() {
 
 ## Installation
 
-#### Add this package using Composer
+Check the appropriate wrapper package for installation your version of Laravel.
 
-From the command line inside your project directory, simply type:
-
-`composer require adamwathan/eloquent-oauth`
-
-(Or you can manually edit `composer.json` by adding the following line under the `"require"` section:
-
-`"adamwathan/eloquent-oauth": "~5.0"`
-
-...then run `composer update` to download the package to your vendor directory.)
-
-#### Update your config
-
-Add the service provider to the `providers` array in `config/app.php`:
-
-```php
-'providers' => [
-    // ...
-    'AdamWathan\EloquentOAuth\EloquentOAuthServiceProvider',
-    // ...
-]
-```
-
-Add the facade to the `aliases` array in `config/app.php`:
-
-```php
-'aliases' => [
-    // ...
-    'OAuth' => 'AdamWathan\EloquentOAuth\Facades\OAuth',
-    // ...
-]
-```
-
-#### Publish the package configuration
-
-Publish the configuration file and migrations by running the provided console command:
-
-`php artisan eloquent-oauth:install`
-
-Next, re-migrate your database:
-
-`php artisan migrate`
-
-> If you need to change the name of the table used to store OAuth identities, you can do so in the `eloquent-oauth` config file.
-
-#### Configure the providers
-
-Update your app information for the providers you are using in `config/eloquent-oauth.php`:
-
-```php
-'providers' => [
-    'facebook' => [
-        'id' => '12345678',
-        'secret' => 'y0ur53cr374ppk3y',
-        'redirect' => 'https://example.com/facebook/login'),
-        'scope' => [],
-    ]
-]
-```
-
-> Each provider is preconfigured with the scope necessary to retrieve basic user information and the user's email address, so the scope array can usually be left empty unless you need specific additional permissions. Consult the provider's API documentation to find out what permissions are available for the various services.
-
-All done!
-
-> Eloquent OAuth is designed to integrate with Laravel's Eloquent authentication driver, so be sure you are using the `eloquent` driver in `app/config/auth.php`. You can define your actual `User` model however you choose and add whatever behavior you need, just be sure to specify the model you are using with its fully qualified namespace in `app/config/auth.php` as well.
+- [Laravel 4 wrapper](https://github.com/adamwathan/eloquent-oauth-l4)
+- [Laravel 5 wrapper](https://github.com/adamwathan/eloquent-oauth-l5)
 
 ## Usage
 
