@@ -48,7 +48,7 @@ Route::get('facebook/login', function() {
 
 ## Installation
 
-Check the appropriate wrapper package for installation your version of Laravel.
+Check the appropriate wrapper package for installation instructions for your version of Laravel.
 
 - [Laravel 4 wrapper](https://github.com/adamwathan/eloquent-oauth-l4)
 - [Laravel 5 wrapper](https://github.com/adamwathan/eloquent-oauth-l5)
