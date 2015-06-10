@@ -1,28 +1,9 @@
 <?php namespace AdamWathan\EloquentOAuth;
 
-class IdentityStore
+interface IdentityStore
 {
-    public function getByProvider($provider, $providerUser)
-    {
-        return OAuthIdentity::where('provider', $provider)
-            ->where('provider_user_id', $providerUser->id)
-            ->first();
-    }
-
-    public function flush($user, $provider)
-    {
-        OAuthIdentity::where('user_id', $user->getKey())
-            ->where('provider', $provider)
-            ->delete();
-    }
-
-    public function store($identity)
-    {
-        $identity->save();
-    }
-
-    public function userExists($provider, $providerUser)
-    {
-        return (bool) $this->getByProvider($provider, $providerUser);
-    }
+    public function getByProvider($provider, $providerUser);
+    public function flush($user, $provider);
+    public function store($identity);
+    public function userExists($provider, $providerUser);
 }

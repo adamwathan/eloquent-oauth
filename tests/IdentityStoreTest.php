@@ -1,7 +1,7 @@
 <?php
 
 use AdamWathan\EloquentOAuth\OAuthIdentity;
-use AdamWathan\EloquentOAuth\IdentityStore;
+use AdamWathan\EloquentOAuth\EloquentIdentityStore;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Mockery as M;
 use SocialNorm\User as UserDetails;
@@ -36,7 +36,7 @@ class IdentityStoreTest extends FunctionalTestCase
             'email' => 'john.doe@example.com',
             'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
-        $identities = new IdentityStore;
+        $identities = new EloquentIdentityStore;
         $identity = $identities->getByProvider('facebook', $details);
         $this->assertEquals(2, $identity->user_id);
         $this->assertEquals('facebook', $identity->provider);
@@ -66,7 +66,7 @@ class IdentityStoreTest extends FunctionalTestCase
             'email' => 'john.doe@example.com',
             'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
-        $identities = new IdentityStore;
+        $identities = new EloquentIdentityStore;
         $identity = $identities->getByProvider('facebook', $details);
         $this->assertNull($identity);
     }
@@ -88,7 +88,7 @@ class IdentityStoreTest extends FunctionalTestCase
 
         $this->assertEquals(1, OAuthIdentity::where('provider', 'facebook')->where('user_id', 2)->count());
 
-        $identities = new IdentityStore;
+        $identities = new EloquentIdentityStore;
         $user = M::mock();
         $user->shouldReceive('getKey')->andReturn(2);
         $identities->flush($user, 'facebook');
@@ -107,7 +107,7 @@ class IdentityStoreTest extends FunctionalTestCase
 
         $this->assertEquals(0, OAuthIdentity::count());
 
-        $identities = new IdentityStore;
+        $identities = new EloquentIdentityStore;
         $identities->store($identity);
 
         $this->assertEquals(1, OAuthIdentity::count());
@@ -129,7 +129,7 @@ class IdentityStoreTest extends FunctionalTestCase
             'email' => 'john.doe@example.com',
             'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
-        $identities = new IdentityStore;
+        $identities = new EloquentIdentityStore;
         $this->assertTrue($identities->userExists('facebook', $details));
     }
 
@@ -149,7 +149,7 @@ class IdentityStoreTest extends FunctionalTestCase
             'email' => 'john.doe@example.com',
             'avatar' => 'http://example.com/photos/john_doe.jpg',
         ));
-        $identities = new IdentityStore;
+        $identities = new EloquentIdentityStore;
         $this->assertFalse($identities->userExists('facebook', $details));
     }
 }
