@@ -9,23 +9,24 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "illuminate/auth": "4.*|5.*",
         "illuminate/session": "4.*|5.*",
         "illuminate/database": "4.*|5.*",
         "illuminate/http": "4.*|5.*",
         "illuminate/routing": "4.*|5.*",
         "illuminate/support": "4.*|5.*",
-        "socialnorm/socialnorm": "0.1.*",
-        "socialnorm/facebook": "0.1.*",
-        "socialnorm/github": "0.1.*",
-        "socialnorm/linkedin": "0.1.*",
-        "socialnorm/google": "0.1.*",
-        "socialnorm/instagram": "0.1.*",
-        "socialnorm/soundcloud": "0.1.*"
+        "socialnorm/socialnorm": "^0.2",
+        "socialnorm/facebook": "^0.2",
+        "socialnorm/github": "^0.2",
+        "socialnorm/linkedin": "^0.2",
+        "socialnorm/google": "^0.2",
+        "socialnorm/instagram": "^0.2",
+        "socialnorm/soundcloud": "^0.2"
     },
     "require-dev": {
-        "mockery/mockery": "~0.9"
+        "mockery/mockery": "~0.9",
+        "phpunit/phpunit": "^4.8"
     },
     "autoload": {
         "psr-4": {
