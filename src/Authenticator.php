@@ -16,9 +16,7 @@ class Authenticator
     public function login($providerAlias, $userDetails, $callback = null)
     {
         $user = $this->getUser($providerAlias, $userDetails);
-        if ($callback) {
-            $callback($user, $userDetails);
-        }
+        $user = $this->runCallback($callback, $user, $userDetails);
         $this->updateUser($user, $providerAlias, $userDetails);
         $this->auth->login($user);
     }
@@ -29,6 +27,13 @@ class Authenticator
             return $this->getExistingUser($providerAlias, $details);
         }
         return $this->users->create();
+    }
+
+    protected function runCallback($callback, $user, $userDetails)
+    {
+        $callback = $callback ?: function () {};
+        $callbackUser = $callback($user, $userDetails);
+        return $callbackUser ?: $user;
     }
 
     protected function updateUser($user, $providerAlias, $details)
