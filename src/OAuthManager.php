@@ -21,7 +21,13 @@ class OAuthManager
     public function login($providerAlias, $callback = null)
     {
         $details = $this->socialnorm->getUser($providerAlias);
-        return $this->authenticator->login($providerAlias, $details, $callback);
+        return $this->authenticator->login($providerAlias, $details, $callback, $remember = false);
+    }
+
+    public function loginForever($providerAlias, $callback = null)
+    {
+        $details = $this->socialnorm->getUser($providerAlias);
+        return $this->authenticator->login($providerAlias, $details, $callback, $remember = true);
     }
 
     public function registerProvider($alias, $provider)

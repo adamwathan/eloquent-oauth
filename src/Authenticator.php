@@ -13,12 +13,12 @@ class Authenticator
         $this->identities = $identities;
     }
 
-    public function login($providerAlias, $userDetails, $callback = null)
+    public function login($providerAlias, $userDetails, $callback = null, $remember = false)
     {
         $user = $this->getUser($providerAlias, $userDetails);
         $user = $this->runCallback($callback, $user, $userDetails);
         $this->updateUser($user, $providerAlias, $userDetails);
-        $this->auth->login($user);
+        $this->auth->login($user, $remember);
     }
 
     protected function getUser($providerAlias, $details)
