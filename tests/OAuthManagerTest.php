@@ -44,7 +44,7 @@ class OAuthManagerTest extends PHPUnit_Framework_TestCase
         $oauth = new OAuthManager($redirector, $authenticator, $socialnorm);
         $oauth->login($providerAlias, $callback);
 
-        $authenticator->shouldHaveReceived('login')->with($providerAlias, $socialnormUser, $callback);
+        $authenticator->shouldHaveReceived('login')->with($providerAlias, $socialnormUser, $callback, false);
     }
 
     private function buildRedirector()

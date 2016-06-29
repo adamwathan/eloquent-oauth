@@ -30,7 +30,7 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
         $users->shouldHaveReceived('create');
         $users->shouldHaveReceived('store')->with($user);
         $identities->shouldHaveReceived('store');
-        $auth->shouldHaveReceived('login')->with($user);
+        $auth->shouldHaveReceived('login')->with($user, false);
     }
 
     public function test_login_uses_existing_user_if_matching_user_exists()
@@ -57,7 +57,7 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
         $users->shouldNotHaveReceived('create');
         $users->shouldHaveReceived('store')->with($user);
         $identities->shouldHaveReceived('store');
-        $auth->shouldHaveReceived('login')->with($user);
+        $auth->shouldHaveReceived('login')->with($user, false);
     }
 
     public function test_if_a_user_is_returned_from_the_callback_that_user_is_used()
@@ -87,7 +87,7 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
         $users->shouldNotHaveReceived('create');
         $users->shouldHaveReceived('store')->with($otherUser);
         $identities->shouldHaveReceived('store');
-        $auth->shouldHaveReceived('login')->with($otherUser);
+        $auth->shouldHaveReceived('login')->with($otherUser, false);
     }
 
     public function test_if_nothing_is_returned_from_the_callback_the_found_or_created_user_is_used()
@@ -117,6 +117,6 @@ class AuthenticatorTest extends PHPUnit_Framework_TestCase
         $users->shouldNotHaveReceived('create');
         $users->shouldHaveReceived('store')->with($foundUser);
         $identities->shouldHaveReceived('store');
-        $auth->shouldHaveReceived('login')->with($foundUser);
+        $auth->shouldHaveReceived('login')->with($foundUser, false);
     }
 }
