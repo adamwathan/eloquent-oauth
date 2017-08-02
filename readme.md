@@ -1,5 +1,8 @@
+> **Important: This package is not actively maintained.** For bug fixes and new features, please fork.
+
 # Eloquent OAuth
 
+[![This Project Has Been Deprecated.](http://www.repostatus.org/badges/0.1.0/abandoned.svg)](http://www.repostatus.org/#abandoned)
 [![Code Climate](https://codeclimate.com/github/adamwathan/eloquent-oauth/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/eloquent-oauth)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/adamwathan/eloquent-oauth/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/adamwathan/eloquent-oauth/?branch=master)
 [![Build Status](https://api.travis-ci.org/adamwathan/eloquent-oauth.svg)](https://travis-ci.org/adamwathan/eloquent-oauth)
