@@ -1,39 +1,39 @@
 {
-    "name": "adamwathan/eloquent-oauth",
-    "description": "Stupid simple OAuth authentication with Laravel and Eloquent",
-    "authors": [
+  "name": "adamwathan/eloquent-oauth",
+  "description": "Stupid simple OAuth authentication with Laravel and Eloquent",
+  "authors": [
     {
-        "name": "Adam Wathan",
-        "email": "adam.wathan@gmail.com"
+      "name": "Adam Wathan",
+      "email": "adam.wathan@gmail.com"
     }
-    ],
-    "license": "MIT",
-    "require": {
-        "php": ">=5.5.0",
-        "illuminate/auth": "4.*|5.*",
-        "illuminate/session": "4.*|5.*",
-        "illuminate/database": "4.*|5.*",
-        "illuminate/http": "4.*|5.*",
-        "illuminate/routing": "4.*|5.*",
-        "illuminate/support": "4.*|5.*",
-        "socialnorm/socialnorm": "^0.2",
-        "socialnorm/facebook": "^0.2",
-        "socialnorm/github": "^0.2",
-        "socialnorm/linkedin": "^0.2",
-        "socialnorm/google": "^0.2",
-        "socialnorm/instagram": "^0.2",
-        "socialnorm/soundcloud": "^0.2"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.0",
+    "illuminate/auth": "4.*|5.*|6.*",
+    "illuminate/session": "4.*|5.*|6.*",
+    "illuminate/database": "4.*|5.*|6.*",
+    "illuminate/http": "4.*|5.*|6.*",
+    "illuminate/routing": "4.*|5.*|6.*",
+    "illuminate/support": "4.*|5.*|6.*",
+    "socialnorm/socialnorm": "^0.2",
+    "socialnorm/facebook": "^0.2",
+    "socialnorm/github": "^0.2",
+    "socialnorm/linkedin": "^0.2",
+    "socialnorm/google": "^0.2",
+    "socialnorm/instagram": "^0.2",
+    "socialnorm/soundcloud": "^0.2"
+  },
+  "require-dev": {
+    "mockery/mockery": "~0.9",
+    "phpunit/phpunit": "^4.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "AdamWathan\\EloquentOAuth\\": "src/"
     },
-    "require-dev": {
-        "mockery/mockery": "~0.9",
-        "phpunit/phpunit": "^4.8"
-    },
-    "autoload": {
-        "psr-4": {
-            "AdamWathan\\EloquentOAuth\\": "src/"
-        },
-        "classmap": [
-            "tests/FunctionalTestCase.php"
-        ]
-    }
+    "classmap": [
+      "tests/FunctionalTestCase.php"
+    ]
+  }
 }
